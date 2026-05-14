@@ -1,17 +1,128 @@
+.boardWrapper {
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    border-radius: 1.5rem;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    width: 100%;
+    max-width: 90vw; /* Limit on mobile */
+    max-height: 55vh; /* Keep it from taking over the whole height */
+    aspect-ratio: 1 / 1;
+    margin: 0 auto;
+}
+
 .board {
-  position: relative;
-  --board-side-length: 80vh;
-  --player-name-spacing: calc(var(--board-tile-size) * 0.25);
-  height: var(--board-side-length);
-  width: var(--board-side-length);
+    position: relative;
+    width: 100%;
+    height: 100%;
 }
-.board-image {
-  height: var(--board-side-length);
-  width: var(--board-side-length);
-  background-color: white;
+
+.boardImage {
+    width: 100%;
+    height: 100%;
 }
-@media only screen and (max-width: calc(80vh + 15vw)) {
-  .board {
-    --board-side-length: 85vw;
-  }
+
+.inactiveZoneOverlay {
+    position: absolute;
+    width: 40%;
+    height: 40%;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 1;
+    pointer-events: none;
+    border-radius: 0.5rem;
+}
+
+.inactiveTopLeft {
+    top: 0;
+    left: 0;
+}
+
+.inactiveBottomRight {
+    bottom: 0;
+    right: 0;
+}
+
+.cardDeckOverlay {
+    position: absolute;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40%;
+    height: 40%;
+}
+
+.truthDeck {
+    top: 0;
+    left: 0;
+    transform: rotate(180deg); /* Face player 2 */
+}
+
+.dareDeck {
+    bottom: 0;
+    right: 0;
+}
+
+.cardStackLandscape {
+    position: relative;
+    width: 80%;
+    height: 50%;
+}
+
+.cardBackMini, .topCardMini {
+    position: absolute;
+    inset: 0;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: 800;
+    font-family: 'Quicksand', sans-serif;
+    color: #fff;
+    cursor: help;
+    transition: transform 0.2s;
+}
+
+.cardBackMini {
+    background: #1d2946;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    transform: translateY(4px) translateX(4px);
+    opacity: 0.5;
+}
+
+.topCardMini {
+    background: linear-gradient(135deg, #1d2946, #121f3b);
+    border: 2px solid #ff4d80;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}
+
+.cardStackLandscape:hover .topCardMini {
+    transform: translateY(-4px) translateX(-4px);
+}
+
+.truthCard { border-color: #edb8c8; color: #edb8c8; }
+.dareCard { border-color: #edc157; color: #edc157; }
+
+/* Keep existing markers... */
+.specialTileMarker {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.markerEmoji {
+    font-size: 1.4rem;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+    animation: markerPulse 2s infinite ease-in-out;
+}
+
+@keyframes markerPulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.15); opacity: 0.8; }
 }

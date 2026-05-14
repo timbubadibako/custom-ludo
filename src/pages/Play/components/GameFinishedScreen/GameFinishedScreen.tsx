@@ -30,6 +30,7 @@ function GameFinishedScreen({ playerFinishOrder }: Props) {
           exit={{ scale: 0.9, opacity: 0 }}
           transition={{ duration: 0.2 }}
         >
+          <p className={styles.gameFinishedKicker}>Night mode complete</p>
           <span className={styles.gameFinishedText}>GAME FINISHED!</span>
           <section className={styles.gameResult}>
             {playerFinishOrder.map((p, i) => (
@@ -45,6 +46,7 @@ function GameFinishedScreen({ playerFinishOrder }: Props) {
           <Link className={styles.playAgainBtn} to="/setup">
             Play Again!
           </Link>
+          <p className={styles.gameFinishedNote}>The board concept can continue from here with the same dark neon tone.</p>
         </motion.div>
       </motion.div>
     </AnimatePresence>

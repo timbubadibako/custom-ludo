@@ -1,0 +1,331 @@
+<html class="dark">
+
+<head>
+    <meta charset="utf-8" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&amp;family=Montserrat:wght@300..900&amp;family=Inter:wght@300..900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed": "#30111d",
+                        "surface-variant": "#283451",
+                        "surface-container-highest": "#283451",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary": "#482632",
+                        "error": "#ffb4ab",
+                        "surface-container-high": "#1d2946",
+                        "on-secondary-container": "#fff7ee",
+                        "primary-fixed": "#ffd9de",
+                        "surface-bright": "#2c3956",
+                        "jazz-magenta": "#FF4D80",
+                        "on-primary-container": "#5a0022",
+                        "tertiary-fixed-dim": "#edb8c8",
+                        "deep-blue": "#14213D",
+                        "snow-white": "#FAFAFA",
+                        "surface-tint": "#ffb2bf",
+                        "night-black": "#24242A",
+                        "inverse-primary": "#b90e4f",
+                        "on-surface-variant": "#e1bec3",
+                        "surface-container": "#121f3b",
+                        "surface": "#04122e",
+                        "primary": "#ffb2bf",
+                        "inverse-surface": "#d9e2ff",
+                        "on-error": "#690005",
+                        "inverse-on-surface": "#23304d",
+                        "soft-pink": "#FEC8D8",
+                        "danger-red": "#E63946",
+                        "on-secondary": "#3f2e00",
+                        "on-primary-fixed": "#3f0016",
+                        "outline": "#a9898d",
+                        "foreplay-gold": "#FFD166",
+                        "error-container": "#93000a",
+                        "secondary-container": "#906d00",
+                        "on-secondary-fixed": "#251a00",
+                        "secondary-fixed": "#ffdf9b",
+                        "primary-container": "#ff4d80",
+                        "surface-container-low": "#0d1b36",
+                        "secondary": "#edc157",
+                        "tertiary": "#edb8c8",
+                        "on-primary": "#660027",
+                        "on-secondary-fixed-variant": "#5b4300",
+                        "background": "#04122e",
+                        "on-surface": "#d9e2ff",
+                        "primary-fixed-dim": "#ffb2bf",
+                        "tertiary-fixed": "#ffd9e3",
+                        "on-background": "#d9e2ff",
+                        "on-tertiary-fixed-variant": "#623b49",
+                        "surface-dim": "#04122e",
+                        "secondary-fixed-dim": "#edc157",
+                        "on-primary-fixed-variant": "#90003b",
+                        "on-tertiary-container": "#411f2c",
+                        "surface-container-lowest": "#010d29",
+                        "outline-variant": "#5a4044",
+                        "tertiary-container": "#b38493"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xxl": "48px",
+                        "sm": "8px",
+                        "xl": "32px",
+                        "safe-area": "20px",
+                        "base": "8px",
+                        "xs": "4px",
+                        "lg": "24px",
+                        "md": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Quicksand"],
+                        "display-lg": ["Quicksand"],
+                        "label-md": ["Montserrat"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Montserrat"],
+                        "action-text": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .neon-glow-primary {
+            box-shadow: 0 0 15px rgba(255, 77, 128, 0.4);
+        }
+
+        .neon-glow-gold {
+            box-shadow: 0 0 15px rgba(255, 209, 102, 0.4);
+        }
+
+        .glass-panel {
+            background: rgba(29, 41, 70, 0.6);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+
+<body class="bg-background text-on-background font-body-md">
+    <div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+        <!-- Minimal Header for Setup Flow -->
+        <header
+            class="flex items-center justify-between px-md py-lg border-b border-outline-variant bg-surface-container-lowest">
+            <div class="flex items-center gap-md">
+                <button
+                    class="flex items-center justify-center size-10 rounded-full bg-surface-container-high hover:bg-surface-bright text-on-surface transition-colors">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                </button>
+                <h1 class="text-headline-md text-on-surface">Game Setup</h1>
+            </div>
+            <div
+                class="flex items-center gap-sm px-md py-xs bg-jazz-magenta/10 rounded-full border border-jazz-magenta/30">
+                <span class="size-2 rounded-full bg-jazz-magenta animate-pulse"></span>
+                <span class="text-label-md text-jazz-magenta uppercase">18+ Restricted</span>
+            </div>
+        </header>
+        <main class="flex-1 max-w-4xl mx-auto w-full px-base py-xl space-y-xl">
+            <!-- Intro Section -->
+            <section class="space-y-sm px-md">
+                <h2 class="text-display-lg text-primary leading-tight">Choose Your Vibe</h2>
+                <p class="text-body-lg text-on-surface-variant">The board adapts to your chosen intensity. Select a
+                    theme to begin.</p>
+            </section>
+            <!-- Theme Selection Grid -->
+            <section class="grid grid-cols-1 md:grid-cols-3 gap-md px-md">
+                <!-- Romantic Card -->
+                <div
+                    class="group relative aspect-[4/5] overflow-hidden rounded-xl border-2 border-transparent hover:border-soft-pink transition-all cursor-pointer">
+                    <div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                        data-alt="A lush and luxurious background featuring soft pink pleated silk fabric ripples. The lighting is warm and candlelit, creating deep shadows and glowing highlights on the satin texture. The overall aesthetic is romantic, elegant, and intimate, following the soft pink and deep blue color palette of the UI design."
+                        style='background-image: linear-gradient(to top, #14213D 10%, transparent 70%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuAELWamyWZzZu8I3IxTScZKDlExjVoONiBcdxuHfZZa-H69Iuz-k6imaGZyioTnEnjIhqkkpjSFocNSf7vK0UAlZLO2_CXRbHs29c61CjgGz1SC-4nSJL_vC3Ypl96EDzabRMeYqHmvvoa3L327RZ1DylnX1REy28KkXyxF_o9jsWxcyGvR_8qQwSGFK4FIDcBUHeGDOedeN-8duII9FUwlHYfCkCydeBlkf_l2gQFYktM5bTAl93kjzHT3WMY79Wu8z5GO_UU");'>
+                    </div>
+                    <div
+                        class="absolute inset-0 flex flex-col justify-end p-lg bg-gradient-to-t from-background/90 via-background/20 to-transparent">
+                        <span class="material-symbols-outlined text-soft-pink mb-sm"
+                            style="font-variation-settings: 'FILL' 1;">favorite</span>
+                        <h3 class="text-headline-md text-snow-white">Romantic</h3>
+                        <p class="text-label-md text-soft-pink">Soft, intimate, and meaningful connection.</p>
+                    </div>
+                </div>
+                <!-- Fun Card -->
+                <div
+                    class="group relative aspect-[4/5] overflow-hidden rounded-xl border-2 border-transparent hover:border-foreplay-gold transition-all cursor-pointer shadow-xl">
+                    <div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                        data-alt="A vibrant and playful pattern background with golden sparkles and abstract geometric confetti floating in a deep navy space. The lighting is energetic and bright, featuring a bokeh effect that suggests a celebratory nightlife atmosphere. The visual style is modern, lively, and matches the foreplay-gold accent color of the design system."
+                        style='background-image: linear-gradient(to top, #14213D 10%, transparent 70%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuC3sUyiNgKAMl_lFTGfSb4trQw3V9Xl1s0bTY-M8yBIB1KWUVQdMEtY1HfGNVRPeNasaFudahX5vCTuHuY-Zf3yb_0zxeo7WFb-zyCGWFyVm8lKpxvHPV9dz91LU0pyjCO2kkqYfpBXYZrHcWhwyx5zj-aT7LmDKdIy5UWTEnQPLKnH2hJf750obSWOTINlJGmvpReu1DkHlh8QswUA9ux7jlyDpidpk8Le-QhCuG_jlBwGQ4lvM-4rVsOBywGhDNuiLn7QAyQ");'>
+                    </div>
+                    <div
+                        class="absolute inset-0 flex flex-col justify-end p-lg bg-gradient-to-t from-background/90 via-background/20 to-transparent">
+                        <span class="material-symbols-outlined text-foreplay-gold mb-sm"
+                            style="font-variation-settings: 'FILL' 1;">celebration</span>
+                        <h3 class="text-headline-md text-snow-white">Fun</h3>
+                        <p class="text-label-md text-foreplay-gold">Playful challenges and lighthearted energy.</p>
+                    </div>
+                </div>
+                <!-- Naughty Card -->
+                <div
+                    class="group relative aspect-[4/5] overflow-hidden rounded-xl border-2 border-transparent hover:border-jazz-magenta transition-all cursor-pointer">
+                    <div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                        data-alt="A dark and moody background featuring a sharp magenta neon grid stretching into a digital horizon. The aesthetic is cyberpunk-inspired with high-contrast neon lighting against deep black surfaces. Intense pink glows reflect off dark metallic lines, creating a pulse-like visual rhythm that perfectly aligns with the jazz-magenta brand color."
+                        style='background-image: linear-gradient(to top, #14213D 10%, transparent 70%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuA06ff0Kfz20jVlQzAEwbzKRK8IQMFRd90SAB2L3n1yXPTToROJitMlurB9AJRT07muh3eFyyiUOdh-GjJVj8Z7ourPgf1MRMBZuJSMaEMg_thH2F7iPf5W7OQYUvoyQ_s3zoc30lQqn74bDA0Y-OLX7LtFiy9dv8Brzojr7IFnjnwRRn2BEzt26yAQx2tP6Hd2AyO0oFQQ0gNylYzaUo9dKLmYeYA8DRRmn-mIJXM4wzi0lf69E3SzECpm_NEAmgBFkvLdKQs");'>
+                    </div>
+                    <div
+                        class="absolute inset-0 flex flex-col justify-end p-lg bg-gradient-to-t from-background/90 via-background/20 to-transparent">
+                        <span class="material-symbols-outlined text-jazz-magenta mb-sm"
+                            style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+                        <h3 class="text-headline-md text-snow-white">Naughty</h3>
+                        <p class="text-label-md text-jazz-magenta">Daring prompts and high-heat excitement.</p>
+                    </div>
+                </div>
+            </section>
+            <!-- Consent Glowing Card -->
+            <section class="px-md">
+                <div class="glass-panel p-lg rounded-xl border border-primary/20 neon-glow-primary">
+                    <div class="flex items-start gap-md">
+                        <div class="flex items-center h-6">
+                            <input
+                                class="h-6 w-6 rounded border-outline-variant bg-surface-container-high text-jazz-magenta focus:ring-jazz-magenta"
+                                id="consent" name="consent" type="checkbox" />
+                        </div>
+                        <div class="flex flex-col gap-xs">
+                            <label class="text-headline-md text-on-surface" for="consent">Mutual Consent
+                                Agreement</label>
+                            <p class="text-body-md text-on-surface-variant">I and my partner(s) are over 18 years old.
+                                We agree to play with mutual respect, honoring each other's boundaries. We understand
+                                that either player can stop the game at any time using the 'Safe Word' button.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Player & Token Personals -->
+            <section class="space-y-lg px-md">
+                <h2 class="text-headline-lg text-snow-white">Token Personals</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+                    <!-- Player 1 Setup -->
+                    <div class="glass-panel p-lg rounded-xl border border-outline-variant">
+                        <div class="flex items-center gap-md mb-lg">
+                            <div
+                                class="size-16 rounded-full bg-jazz-magenta/20 border-2 border-jazz-magenta flex items-center justify-center text-3xl shadow-[0_0_20px_rgba(255,77,128,0.5)]">
+                                🔥
+                            </div>
+                            <div class="flex-1">
+                                <input
+                                    class="w-full bg-transparent border-b border-outline-variant focus:border-jazz-magenta text-headline-md text-on-surface placeholder:text-outline-variant py-sm"
+                                    placeholder="Player 1 Name" type="text" />
+                            </div>
+                        </div>
+                        <div class="space-y-md">
+                            <p class="text-label-md text-on-surface-variant uppercase tracking-widest">Select Icon &amp;
+                                Glow</p>
+                            <div class="flex flex-wrap gap-sm">
+                                <button
+                                    class="size-10 rounded-lg bg-surface-container-high border border-outline-variant flex items-center justify-center hover:bg-surface-container-highest">💖</button>
+                                <button
+                                    class="size-10 rounded-lg bg-surface-container-high border border-jazz-magenta flex items-center justify-center">🔥</button>
+                                <button
+                                    class="size-10 rounded-lg bg-surface-container-high border border-outline-variant flex items-center justify-center hover:bg-surface-container-highest">🍒</button>
+                                <button
+                                    class="size-10 rounded-lg bg-surface-container-high border border-outline-variant flex items-center justify-center hover:bg-surface-container-highest">🥂</button>
+                            </div>
+                            <div class="flex items-center gap-md">
+                                <div
+                                    class="size-8 rounded-full bg-jazz-magenta border-2 border-snow-white ring-4 ring-jazz-magenta/20 cursor-pointer">
+                                </div>
+                                <div
+                                    class="size-8 rounded-full bg-foreplay-gold border-2 border-transparent cursor-pointer">
+                                </div>
+                                <div
+                                    class="size-8 rounded-full bg-soft-pink border-2 border-transparent cursor-pointer">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Player 2 Setup -->
+                    <div class="glass-panel p-lg rounded-xl border border-outline-variant">
+                        <div class="flex items-center gap-md mb-lg">
+                            <div
+                                class="size-16 rounded-full bg-foreplay-gold/20 border-2 border-foreplay-gold flex items-center justify-center text-3xl shadow-[0_0_20px_rgba(255,209,102,0.5)]">
+                                🍒
+                            </div>
+                            <div class="flex-1">
+                                <input
+                                    class="w-full bg-transparent border-b border-outline-variant focus:border-foreplay-gold text-headline-md text-on-surface placeholder:text-outline-variant py-sm"
+                                    placeholder="Player 2 Name" type="text" />
+                            </div>
+                        </div>
+                        <div class="space-y-md">
+                            <p class="text-label-md text-on-surface-variant uppercase tracking-widest">Select Icon &amp;
+                                Glow</p>
+                            <div class="flex flex-wrap gap-sm">
+                                <button
+                                    class="size-10 rounded-lg bg-surface-container-high border border-outline-variant flex items-center justify-center hover:bg-surface-container-highest">💋</button>
+                                <button
+                                    class="size-10 rounded-lg bg-surface-container-high border border-outline-variant flex items-center justify-center hover:bg-surface-container-highest">💎</button>
+                                <button
+                                    class="size-10 rounded-lg bg-surface-container-high border border-foreplay-gold flex items-center justify-center">🍒</button>
+                                <button
+                                    class="size-10 rounded-lg bg-surface-container-high border border-outline-variant flex items-center justify-center hover:bg-surface-container-highest">🌹</button>
+                            </div>
+                            <div class="flex items-center gap-md">
+                                <div
+                                    class="size-8 rounded-full bg-jazz-magenta border-2 border-transparent cursor-pointer">
+                                </div>
+                                <div
+                                    class="size-8 rounded-full bg-foreplay-gold border-2 border-snow-white ring-4 ring-foreplay-gold/20 cursor-pointer">
+                                </div>
+                                <div
+                                    class="size-8 rounded-full bg-soft-pink border-2 border-transparent cursor-pointer">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Safe Word Explainer -->
+            <section class="px-md">
+                <div class="flex items-center gap-lg p-md bg-danger-red/10 border border-danger-red/30 rounded-xl">
+                    <div
+                        class="shrink-0 size-12 bg-danger-red rounded-lg flex items-center justify-center text-snow-white">
+                        <span class="material-symbols-outlined"
+                            style="font-variation-settings: 'FILL' 1;">emergency_home</span>
+                    </div>
+                    <div>
+                        <h4 class="text-headline-md text-danger-red">The Safe Word</h4>
+                        <p class="text-body-md text-on-surface-variant">Inside the game, a <span
+                                class="font-bold text-snow-white">'Finish Now'</span> button is always visible. Clicking
+                            it ends the game instantly and clears all prompt history. Use it if you or your partner feel
+                            uncomfortable at any point.</p>
+                    </div>
+                </div>
+            </section>
+            <!-- Final CTA -->
+            <div class="flex flex-col items-center gap-md pb-xxl px-md">
+                <button
+                    class="w-full max-w-md h-16 bg-jazz-magenta text-snow-white text-action-text rounded-full shadow-[0_0_25px_rgba(255,77,128,0.6)] hover:brightness-110 transition-all flex items-center justify-center gap-md">
+                    <span>Start the Night</span>
+                    <span class="material-symbols-outlined">play_arrow</span>
+                </button>
+                <p class="text-label-md text-on-surface-variant">Ready for an unforgettable experience?</p>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>

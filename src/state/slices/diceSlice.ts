@@ -52,6 +52,13 @@ const reducers = {
       (_, i) => i !== action.payload.randomIndex
     );
   },
+  forceDiceNumber: (
+    state: TDiceState,
+    action: PayloadAction<{ colour: TPlayerColour; number: number }>
+  ) => {
+    const dice = getDice(state, action.payload.colour);
+    dice.diceNumber = action.payload.number;
+  },
   renewRollBag: (state: TDiceState, action: PayloadAction<TPlayerColour>) => {
     state.rollBag[action.payload] = generateRollBag();
   },
@@ -67,6 +74,7 @@ const diceSlice = createSlice({
 export const {
   registerDice,
   setDiceNumber,
+  forceDiceNumber,
   setIsPlaceholderShowing,
   renewRollBag,
   clearDiceState,

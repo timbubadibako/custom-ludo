@@ -1,41 +1,63 @@
 import type { TPlayerColour } from '../../../../types';
-import BotIcon from '../../../../assets/icons/bot.svg?react';
-import HumanIcon from '../../../../assets/icons/human.svg?react';
-import { MAX_PLAYER_NAME_LENGTH, playerColours } from '../../../../game/players/constants';
-import 'react-tooltip/dist/react-tooltip.css';
 import styles from './PlayerInput.module.css';
+import clsx from 'clsx';
+import { playerColours, MAX_PLAYER_NAME_LENGTH } from '../../../../game/players/constants';
 
 type Props = {
   colour: TPlayerColour;
   name: string;
-  isBot: boolean;
-  onBotStatusChange: (isBot: boolean) => void;
+  token: string;
   onNameChange: (name: string) => void;
+  onTokenChange: (token: string) => void;
+  unavailableTokens: string[];
 };
 
-function PlayerInput({ colour, isBot, name, onBotStatusChange, onNameChange }: Props) {
+const tokenOptions = ['🔥', '💗', '🎭', '✨', '💎', '❤️‍🔥', '💋', '🔮'];
+
+function PlayerInput({ colour, name, token, onNameChange, onTokenChange, unavailableTokens }: Props) {
   return (
-    <div className={styles.playerInput}>
-      <span
-        className={styles.playerInputColourDot}
-        style={{ backgroundColor: playerColours[colour] }}
-      />
-      <input
-        type="text"
-        placeholder="Enter player name"
-        className={styles.playerNameInput}
-        value={name}
-        onChange={(e) => onNameChange(e.target.value.slice(0, MAX_PLAYER_NAME_LENGTH))}
-      />
-      <button
-        className={styles.botStatusBtn}
-        data-tooltip-id="bot-status-tooltip"
-        data-tooltip-content={isBot ? 'Bot' : 'Human'}
-        aria-label="Toggle Ludo bot on or off"
-        onClick={() => onBotStatusChange(!isBot)}
-      >
-        {isBot ? <BotIcon /> : <HumanIcon />}
-      </button>
+    <div className={styles.playerInputCard}>
+      <div className={styles.playerInputMain}>
+        <span
+          className={styles.playerInputColourDot}
+          style={{ backgroundColor: playerColours[colour], color: playerColours[colour] }}
+        />
+        <input
+          type="text"
+          placeholder="Enter name"
+          className={styles.playerNameInput}
+          value={name}
+          onChange={(e) => onNameChange(e.target.value.slice(0, MAX_PLAYER_NAME_LENGTH))}
+        />
+        
+        <div className={styles.currentTokenDisplay}>
+          {token}
+        </div>
+      </div>
+
+      <div className={styles.tokenPickerPanel}>
+        <div className={styles.tokenOptionsRow}>
+          {tokenOptions.map((opt) => {
+            const isSelectedByOther = unavailableTokens.includes(opt);
+            return (
+              <button
+                key={opt}
+                type="button"
+                className={clsx(
+                  styles.tokenOptionBtn, 
+                  token === opt && styles.tokenOptionActive,
+                  isSelectedByOther && styles.tokenOptionDisabled
+                )}
+                onClick={() => !isSelectedByOther && onTokenChange(opt)}
+                disabled={isSelectedByOther}
+                title={isSelectedByOther ? 'Token already chosen' : ''}
+              >
+                {opt}
+              </button>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 }

@@ -1,152 +1,243 @@
-import { Link } from 'react-router-dom';
-import { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useCleanup } from '../../hooks/useCleanup';
-import GitHubLogo from '../../assets/icons/github-mark-white.svg?react';
-import LicenseIcon from '../../assets/icons/license.svg?react';
-import ShareIcon from '../../assets/icons/share.svg?react';
+import { 
+  setVibe, 
+  setReward, 
+  updateDraftPlayer, 
+  type TVibe 
+} from '../../state/slices/sessionSlice';
+import type { RootState } from '../../state/store';
 import styles from './HomePage.module.css';
 import clsx from 'clsx';
 
+const vibeModes = [
+  {
+    name: 'Romantic' as TVibe,
+    icon: '💗',
+    tone: 'Soft touches, slower pacing, and warmer prompts.',
+  },
+  {
+    name: 'Fun' as TVibe,
+    icon: '🎲',
+    tone: 'Playful energy, light challenges, and quick surprises.',
+  },
+  {
+    name: 'Naughty' as TVibe,
+    icon: '🔥',
+    tone: 'Neon vibes, intense challenges, and wild consequences.',
+  },
+] as const;
+
+const tokenIcons = ['🔥', '💗', '🎭', '✨', '💎', '❤️‍🔥'];
+const rewardPresets = ['Winner picks the next song', 'Custom reward', 'Victory drink / snack'];
+
 function HomePage() {
   const cleanup = useCleanup();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  
+  const { vibe, reward, draftPlayers } = useSelector((state: RootState) => state.session);
+  
+  const [showConsent, setShowConsent] = useState(false);
+  const [hasAgreed, setHasAgreed] = useState(false);
 
-  const share: React.MouseEventHandler<HTMLButtonElement> = async () => {
-    const shareData: ShareData = {
-      title: 'LibreLudo',
-      text: 'Play Ludo locally with friends on LibreLudo!',
-      url: 'https://libreludo.org/',
-    };
+  useEffect(() => {
+    document.title = 'Ludo Foreplay Night | 18+ Interactive Game';
+    cleanup();
+  }, [cleanup]);
 
-    if (navigator.share) {
-      try {
-        await navigator.share(shareData);
-      } catch (err) {
-        console.error(err);
-      }
-    } else {
-      navigator.clipboard.writeText('https://libreludo.org/');
-      alert('Link copied to clipboard!');
+  const handlePlayClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setShowConsent(true);
+  };
+
+  const confirmAndPlay = () => {
+    if (hasAgreed) {
+      navigate('/setup');
     }
   };
 
-  useEffect(() => {
-    document.title = 'LibreLudo | Free and Open Source Ludo Game';
-    cleanup();
-  }, [cleanup]);
   return (
     <div className={styles.pageContainer}>
       <main className={styles.homePage}>
-        <section className={styles.welcome}>
-          <h1>
-            <span>Welcome to</span> LibreLudo
-          </h1>
-          <p>Roll the dice, compete with friends, and send your tokens home first.</p>
-          <nav className={styles.ctaButtons}>
-            <Link className={clsx(styles.ctaButton, styles.playNowBtn)} to="/setup">
-              🔥 Play Now!
-            </Link>
-            <Link className={clsx(styles.ctaButton, styles.howToPlayBtn)} to="/how-to-play">
-              How to Play
-            </Link>
-          </nav>
+        <section className={styles.hero}>
+          <div className={styles.heroCopy}>
+            <p className={styles.kicker}>LibreLudo: Foreplay Edition</p>
+            <h1>
+              <span>Intimate board game</span>
+              Start the night.
+            </h1>
+            <p className={styles.heroText}>
+              A classic Ludo experience reimagined for couples. Choose your mood, set the stakes, and let the dice decide your evening.
+            </p>
+
+            <div className={styles.badgeRow}>
+              <span className={styles.ageBadge}>18+ Only</span>
+              <span className={styles.modeBadge}>{vibe} Mode Active</span>
+            </div>
+
+            <nav className={styles.ctaButtons} aria-label="Primary actions">
+              <button className={clsx(styles.ctaButton, styles.playNowBtn)} onClick={handlePlayClick}>
+                Start / Play Now
+              </button>
+              <Link className={clsx(styles.ctaButton, styles.howToPlayBtn)} to="/how-to-play">
+                How to Play
+              </Link>
+            </nav>
+          </div>
+
+          <aside className={styles.heroSummary}>
+            <div className={styles.summaryCard}>
+              <p className={styles.subLabel}>Current Preference</p>
+              <h3>{vibe} Vibe</h3>
+              <p className={styles.summaryText}>
+                {vibeModes.find(m => m.name === vibe)?.tone}
+              </p>
+            </div>
+          </aside>
         </section>
-        <div className={styles.information}>
-          <section className={styles.whyPlayLibreludo}>
-            <h2>🔥 Why Play LibreLudo?</h2>
-            <ul>
-              <li>Smooth, modern interface for easy gameplay.</li>
-              <li>Family-friendly: perfect for kids and adults alike.</li>
-              <li>Works great on mobile and desktop devices.</li>
-              <li>No registration—play instantly!</li>
-            </ul>
-          </section>
-          <section className={styles.history}>
-            <h2>📜 History of Ludo</h2>
-            <dl>
-              <dt>Origins</dt>
-              <dd>
-                Ludo is based on the ancient Indian game Pachisi, played as early as the 6th century
-                CE.
-              </dd>
-              <dt>Modern Development</dt>
-              <dd>
-                In 1896, a simpler version called "Ludo" was patented in England, using dice and a
-                square board.
-              </dd>
-              <dt>Gameplay</dt>
-              <dd>Players race colored tokens from start to finish based on dice rolls.</dd>
-              <dt>Worldwide Popularity</dt>
-              <dd>Today, Ludo is enjoyed globally in both board and digital forms.</dd>
-            </dl>
-          </section>
-        </div>
+
+        <section className={styles.mainGrid}>
+          <article className={styles.panelCard}>
+            <div className={styles.sectionHeading}>
+              <p className={styles.kicker}>Mood Selector</p>
+              <h2>Select your intensity.</h2>
+            </div>
+
+            <div className={styles.modeGrid}>
+              {vibeModes.map((mode) => (
+                <button
+                  key={mode.name}
+                  type="button"
+                  className={clsx(styles.modeCard, vibe === mode.name && styles.modeCardActive)}
+                  onClick={() => dispatch(setVibe(mode.name))}
+                >
+                  <span className={styles.modeEmoji} aria-hidden="true">
+                    {mode.icon}
+                  </span>
+                  <strong>{mode.name}</strong>
+                  <p>{mode.tone}</p>
+                </button>
+              ))}
+            </div>
+          </article>
+
+          <article className={styles.panelCard}>
+            <div className={styles.sectionHeading}>
+              <p className={styles.kicker}>Quick Setup</p>
+              <h2>Players & Rewards.</h2>
+            </div>
+
+            <div className={styles.playerGrid}>
+              {draftPlayers.map((player, index) => (
+                <div key={index} className={styles.playerCard}>
+                  <label htmlFor={`player${index}`}>Player {index + 1}</label>
+                  <input 
+                    id={`player${index}`} 
+                    type="text" 
+                    value={player.name} 
+                    onChange={(e) => dispatch(updateDraftPlayer({ index, data: { name: e.target.value } }))}
+                  />
+                  <div className={styles.tokenRow}>
+                    {tokenIcons.map((icon) => (
+                      <button 
+                        key={icon} 
+                        type="button" 
+                        className={clsx(styles.tokenChip, player.token === icon && styles.tokenChipActive)}
+                        onClick={() => dispatch(updateDraftPlayer({ index, data: { token: icon } }))}
+                      >
+                        {icon}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className={styles.rewardBox}>
+              <p className={styles.subLabel}>Set the Victory Reward</p>
+              <div className={styles.rewardRow}>
+                {rewardPresets.map((preset) => (
+                  <button
+                    key={preset}
+                    type="button"
+                    className={clsx(styles.rewardChip, reward === preset && styles.rewardChipActive)}
+                    onClick={() => dispatch(setReward(preset))}
+                  >
+                    {preset}
+                  </button>
+                ))}
+              </div>
+              <input
+                className={styles.rewardInput}
+                type="text"
+                value={reward}
+                onChange={(e) => dispatch(setReward(e.target.value))}
+                placeholder="Or type a custom reward..."
+              />
+            </div>
+          </article>
+        </section>
+
+        <section className={styles.featureRow}>
+          <article className={styles.featureCard}>
+            <p className={styles.kicker}>Truth</p>
+            <h3>Reveal</h3>
+            <p>Sincere questions to deepen your connection or spark curiosity.</p>
+          </article>
+          <article className={styles.featureCard}>
+            <p className={styles.kicker}>Dare</p>
+            <h3>Challenge</h3>
+            <p>Playful actions and sensual tasks to keep the energy high.</p>
+          </article>
+          <article className={styles.featureCard}>
+            <p className={styles.kicker}>Foreplay</p>
+            <h3>Intensity</h3>
+            <p>Special tiles that bring the heat and escalate the match.</p>
+          </article>
+        </section>
+
+        <footer className={styles.footer}>
+          <small className={styles.creditLine}>Built with passion by Priyanshu Rav & Timbubadibako.</small>
+        </footer>
       </main>
-      <footer>
-        <div className={styles.text}>
-          <p className={styles.credits}>
-            Made with{' '}
-            <span aria-label="love" role="img">
-              ❤️
-            </span>{' '}
-            by{' '}
-            <a href="https://github.com/priyanshurav" target="_blank" rel="noopener noreferrer">
-              @priyanshurav
-            </a>
-          </p>
-          <small className={styles.copyright}>
-            Copyright &copy; 2025&ndash;{new Date().getFullYear()} Priyanshu Rav &{' '}
-            <a
-              href="https://github.com/priyanshurav/libreludo/graphs/contributors"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="View LibreLudo Contributors on GitHub"
-              title="View LibreLudo Contributors on GitHub"
-            >
-              Contributors
-            </a>{' '}
-            &middot;{' '}
-            <a
-              href="/LICENSE.txt"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Read the LibreLudo AGPLv3 License"
-              title="Read the LibreLudo AGPLv3 License"
-            >
-              AGPLv3
-            </a>
-          </small>
+
+      {/* Consent Modal Overlay */}
+      {showConsent && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modalContent}>
+            <h2>Safety & Consent</h2>
+            <p>
+              By proceeding, you confirm that:
+              <ul>
+                <li>Both players are 18 years of age or older.</li>
+                <li>Both players consent to the selected game mode and its challenges.</li>
+                <li>The game can be stopped at any time if either player feels uncomfortable.</li>
+              </ul>
+            </p>
+            <label className={styles.consentCheckbox}>
+              <input 
+                type="checkbox" 
+                checked={hasAgreed} 
+                onChange={(e) => setHasAgreed(e.target.checked)} 
+              />
+              <span>I/We understand and agree to proceed.</span>
+            </label>
+            <div className={styles.modalActions}>
+              <button className={styles.cancelBtn} onClick={() => setShowConsent(false)}>Cancel</button>
+              <button 
+                className={clsx(styles.confirmBtn, !hasAgreed && styles.btnDisabled)} 
+                onClick={confirmAndPlay}
+                disabled={!hasAgreed}
+              >
+                Let's Play
+              </button>
+            </div>
+          </div>
         </div>
-        <div className={styles.footerActions}>
-          <a
-            href="https://github.com/priyanshurav/libreludo"
-            target="_blank"
-            aria-label="View Source on GitHub"
-            title="View Source on GitHub"
-            className={styles.iconBtn}
-            rel="noopener noreferrer"
-          >
-            <GitHubLogo />
-          </a>
-          <a
-            href="/THIRD_PARTY_LICENSES.txt"
-            target="_blank"
-            aria-label="Third Party Open Source Licenses"
-            title="Third Party Open Source Licenses"
-            className={styles.iconBtn}
-            rel="noopener noreferrer"
-          >
-            <LicenseIcon />
-          </a>
-          <button
-            className={styles.iconBtn}
-            aria-label="Share LibreLudo"
-            title="Share LibreLudo"
-            onClick={share}
-          >
-            <ShareIcon />
-          </button>
-        </div>
-      </footer>
+      )}
     </div>
   );
 }

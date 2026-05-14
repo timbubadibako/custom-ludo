@@ -1,25 +1,22 @@
 import BoardImage from '../../../../assets/board.svg?react';
+import BoardImage2p from '../../../../assets/board_2p.svg?react';
 import Token from '../Token/Token';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../../../../state/store';
 import { useCallback, useState } from 'react';
 import { NUMBER_OF_BLOCKS_IN_ONE_ROW, resizeBoard } from '../../../../state/slices/boardSlice';
 import { ERRORS } from '../../../../utils/errors';
-import Dice from '../Dice/Dice';
-import type { TCoordinate, TPlayerColour } from '../../../../types';
+import type { TCoordinate } from '../../../../types';
 import { getTokenDOMId, tokensWithCoord } from '../../../../game/tokens/logic';
 import type { TTokenClickData } from '../../../../types/tokens';
 import styles from './Board.module.css';
 import { useResizeObserver } from '../../../../hooks/useResizeObserver';
+import { SPECIAL_TILES } from '../../../../game/coords/specialTiles';
+import clsx from 'clsx';
 
-type Props = {
-  onDiceClick: (colour: TPlayerColour, diceNumber: number) => void;
-};
-
-function Board({ onDiceClick: onDiceRoll }: Props) {
+function Board() {
   const { players, currentPlayerColour } = useSelector((state: RootState) => state.players);
   const { boardTileSize, boardSideLength } = useSelector((state: RootState) => state.board);
-  const { dice } = useSelector((state: RootState) => state.dice);
   const [tokenClickData, setTokenClickData] = useState<TTokenClickData | null>(null);
   const [boardNode, setBoardNode] = useState<HTMLDivElement | null>(null);
   const dispatch = useDispatch();
@@ -62,27 +59,54 @@ function Board({ onDiceClick: onDiceRoll }: Props) {
     });
   };
 
+  const getTileEmoji = (type: string) => {
+    switch(type) {
+      case 'truth': return '🔮';
+      case 'dare': return '🎭';
+      case 'foreplay': return '❤️‍🔥';
+      default: return '';
+    }
+  };
+
+  const is2PlayerMode = players.length === 2;
+
   return (
-    <div className={styles.board} ref={setBoardNode} onClick={handleBoardClick}>
-      {players.map((p) =>
-        p.tokens.map((t) => (
-          <Token
-            colour={t.colour}
-            id={t.id}
-            tokenClickData={tokenClickData}
-            key={getTokenDOMId(t.colour, t.id)}
-          />
-        ))
-      )}
-      {dice.map((d) => (
-        <Dice
-          colour={d.colour}
-          onDiceClick={onDiceRoll}
-          playerName={players.find((p) => p.colour === d.colour)?.name as string}
-          key={d.colour}
-        />
-      ))}
-      <BoardImage className={styles.boardImage} aria-hidden="true" />
+    <div className={styles.boardWrapper}>
+      <div className={styles.board} ref={setBoardNode} onClick={handleBoardClick}>
+
+        {/* Render Special Tiles Overlays */}
+        {SPECIAL_TILES.map((tile, i) => (
+          <div 
+            key={i}
+            className={clsx(styles.specialTileMarker, styles[`marker_${tile.type}`])}
+            style={{
+              left: tile.coords.x * boardTileSize,
+              top: tile.coords.y * boardTileSize,
+              width: boardTileSize,
+              height: boardTileSize,
+            }}
+          >
+            <span className={styles.markerEmoji}>{getTileEmoji(tile.type)}</span>
+          </div>
+        ))}
+
+        {players.map((p) =>
+          p.tokens.map((t) => (
+            <Token
+              colour={t.colour}
+              id={t.id}
+              tokenClickData={tokenClickData}
+              key={getTokenDOMId(t.colour, t.id)}
+            />
+          ))
+        )}
+        
+        {is2PlayerMode ? (
+          <BoardImage2p className={styles.boardImage} aria-hidden="true" />
+        ) : (
+          <BoardImage className={styles.boardImage} aria-hidden="true" />
+        )}
+      </div>
     </div>
   );
 }

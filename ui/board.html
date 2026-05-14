@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Ludo Foreplay Night - Gameplay</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Quicksand:wght@700&amp;family=Montserrat:wght@600;700&amp;family=Inter:wght@400;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed-dim": "#edc157",
+                        "on-tertiary-fixed": "#30111d",
+                        "deep-blue": "#0A1128",
+                        "surface-tint": "#ffb2bf",
+                        "tertiary-container": "#b38493",
+                        "inverse-on-surface": "#23304d",
+                        "outline": "#a9898d",
+                        "error-container": "#93000a",
+                        "on-background": "#d9e2ff",
+                        "primary-fixed": "#ffd9de",
+                        "jazz-magenta": "#FF4D80",
+                        "surface-dim": "#04122e",
+                        "inverse-primary": "#b90e4f",
+                        "on-primary-fixed-variant": "#90003b",
+                        "surface": "#04122e",
+                        "on-secondary-fixed-variant": "#5b4300",
+                        "primary-fixed-dim": "#ffb2bf",
+                        "surface-variant": "#283451",
+                        "secondary-fixed": "#ffdf9b",
+                        "night-black": "#121217",
+                        "on-surface-variant": "#e1bec3",
+                        "on-error": "#690005",
+                        "error": "#ffb4ab",
+                        "on-error-container": "#ffdad6",
+                        "tertiary-fixed": "#ffd9e3",
+                        "surface-container-high": "#1d2946",
+                        "soft-pink": "#FEC8D8",
+                        "surface-bright": "#2c3956",
+                        "on-primary-container": "#5a0022",
+                        "tertiary-fixed-dim": "#edb8c8",
+                        "background": "#04122e",
+                        "secondary-container": "#906d00",
+                        "foreplay-gold": "#FFD166",
+                        "on-secondary": "#3f2e00",
+                        "on-tertiary-fixed-variant": "#623b49",
+                        "surface-container-highest": "#283451",
+                        "on-primary": "#660027",
+                        "snow-white": "#FAFAFA",
+                        "primary": "#ffb2bf",
+                        "on-tertiary": "#482632",
+                        "surface-container-lowest": "#010d29",
+                        "on-primary-fixed": "#3f0016",
+                        "on-secondary-fixed": "#251a00",
+                        "tertiary": "#edb8c8",
+                        "on-secondary-container": "#fff7ee",
+                        "primary-container": "#ff4d80",
+                        "surface-container-low": "#0d1b36",
+                        "surface-container": "#121f3b",
+                        "inverse-surface": "#d9e2ff",
+                        "secondary": "#edc157",
+                        "on-surface": "#d9e2ff",
+                        "danger-red": "#E63946",
+                        "outline-variant": "#5a4044",
+                        "on-tertiary-container": "#411f2c"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "animation": {
+                        'glow-pulse': 'glow-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'breathing': 'breathing 3s ease-in-out infinite',
+                    },
+                    "keyframes": {
+                        'glow-pulse': {
+                            '0%, 100%': { opacity: 1, filter: 'drop-shadow(0 0 5px currentColor) brightness(1.2)' },
+                            '50%': { opacity: 0.7, filter: 'drop-shadow(0 0 15px currentColor) brightness(1.5)' },
+                        },
+                        'breathing': {
+                            '0%, 100%': { boxShadow: '0 0 5px rgba(255, 77, 128, 0.4)' },
+                            '50%': { boxShadow: '0 0 25px rgba(255, 77, 128, 0.8)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #04122e;
+        }
+
+        .ludo-grid {
+            display: grid;
+            grid-template-columns: repeat(15, 1fr);
+            grid-template-rows: repeat(15, 1fr);
+            aspect-ratio: 1/1;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+
+<body class="text-on-surface">
+    <div class="relative flex h-screen w-full flex-col bg-deep-blue overflow-hidden">
+        <!-- Header -->
+        <header
+            class="flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-10 py-3 bg-deep-blue/80 backdrop-blur-md z-50">
+            <div class="flex items-center gap-4 text-white">
+                <div class="size-6 text-jazz-magenta">
+                    <svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M39.5563 34.1455V13.8546C39.5563 15.708 36.8773 17.3437 32.7927 18.3189C30.2914 18.916 27.263 19.2655 24 19.2655C20.737 19.2655 17.7086 18.916 15.2073 18.3189C11.1227 17.3437 8.44365 15.708 8.44365 13.8546V34.1455C8.44365 35.9988 11.1227 37.6346 15.2073 38.6098C17.7086 39.2069 20.737 39.5564 24 39.5564C27.263 39.5564 30.2914 39.2069 32.7927 38.6098C36.8773 37.6346 39.5563 35.9988 39.5563 34.1455Z"
+                            fill="currentColor"></path>
+                        <path clip-rule="evenodd"
+                            d="M10.4485 13.8519C10.4749 13.9271 10.6203 14.246 11.379 14.7361C12.298 15.3298 13.7492 15.9145 15.6717 16.3735C18.0007 16.9296 20.8712 17.2655 24 17.2655C27.1288 17.2655 29.9993 16.9296 32.3283 16.3735C34.2508 15.9145 35.702 15.3298 36.621 14.7361C37.3796 14.246 37.5251 13.9271 37.5515 13.8519C37.5287 13.7876 37.4333 13.5973 37.0635 13.2931C36.5266 12.8516 35.6288 12.3647 34.343 11.9175C31.79 11.0295 28.1333 10.4437 24 10.4437C19.8667 10.4437 16.2099 11.0295 13.657 11.9175C12.3712 12.3647 11.4734 12.8516 10.9365 13.2931C10.5667 13.5973 10.4713 13.7876 10.4485 13.8519ZM37.5563 18.7877C36.3176 19.3925 34.8502 19.8839 33.2571 20.2642C30.5836 20.9025 27.3973 21.2655 24 21.2655C20.6027 21.2655 17.4164 20.9025 14.7429 20.2642C13.1498 19.8839 11.6824 19.3925 10.4436 18.7877V34.1275C10.4515 34.1545 10.5427 34.4867 11.379 35.027C12.298 35.6207 13.7492 36.2054 15.6717 36.6644C18.0007 37.2205 20.8712 37.5564 24 37.5564C27.1288 37.5564 29.9993 37.2205 32.3283 36.6644C34.2508 36.2054 35.702 35.6207 36.621 35.027C37.4573 34.4867 37.5485 34.1546 37.5563 34.1275V18.7877ZM41.5563 13.8546V34.1455C41.5563 36.1078 40.158 37.5042 38.7915 38.3869C37.3498 39.3182 35.4192 40.0389 33.2571 40.5551C30.5836 41.1934 27.3973 41.5564 24 41.5564C20.6027 41.5564 17.4164 41.1934 14.7429 40.5551C12.5808 40.0389 10.6502 39.3182 9.20848 38.3869C7.84205 37.5042 6.44365 36.1078 6.44365 34.1455L6.44365 13.8546C6.44365 12.2684 7.37223 11.0454 8.39581 10.2036C9.43325 9.3505 10.8137 8.67141 12.343 8.13948C15.4203 7.06909 19.5418 6.44366 24 6.44366C28.4582 6.44366 32.5797 7.06909 35.657 8.13948C37.1863 8.67141 38.5667 9.3505 39.6042 10.2036C40.6278 11.0454 41.5563 12.2684 41.5563 13.8546Z"
+                            fill="currentColor" fill-rule="evenodd"></path>
+                    </svg>
+                </div>
+                <h1 class="text-white text-lg font-bold tracking-tight">Ludo Foreplay</h1>
+            </div>
+            <div class="flex flex-1 justify-end gap-4 items-center">
+                <button
+                    class="flex min-w-[120px] cursor-pointer items-center justify-center rounded-xl h-10 px-4 bg-danger-red text-white text-sm font-bold shadow-[0_0_15px_rgba(230,57,70,0.5)]">
+                    <span class="truncate">Finish Now</span>
+                </button>
+                <div class="flex gap-2 glass-panel p-1 rounded-xl">
+                    <button class="flex items-center justify-center w-10 h-10 rounded-lg bg-jazz-magenta text-white">
+                        <span class="material-symbols-outlined"
+                            style="font-variation-settings: 'FILL' 1;">music_note</span>
+                    </button>
+                    <button
+                        class="flex items-center justify-center w-10 h-10 rounded-lg bg-white/5 text-on-surface-variant">
+                        <span class="material-symbols-outlined">settings</span>
+                    </button>
+                </div>
+                <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-jazz-magenta shadow-[0_0_10px_rgba(255,77,128,0.4)]"
+                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD98RNdLHLlCQSvi2ghUXfYvWDgaxQAXfD4zTqTYEE5UFzbmg_W_CBS-2NXBY3TH-AIZYBFkzTZEiZtIr3TRNwbnAp2oC2h4222YV5RBnrcEx6qBzXQtZ3xZuuIP9wIVumnipjjL8BXLa4ogqekp6FUnD84i7ms5x7ho5S3uENYiC__WTEfxJsC4duoEsZP8tUKNANbtE4ViqayZIwtTEqPZEqrmI8j-FQ0_Z85DFxDvTrG1zCY6x8a1wTzItL9Zgz00ES8Znc");'>
+                </div>
+            </div>
+        </header>
+        <main class="flex flex-1 overflow-hidden">
+            <!-- Sidebar Left -->
+            <aside class="w-72 bg-deep-blue/40 border-r border-white/10 p-6 flex flex-col gap-6 backdrop-blur-sm">
+                <div class="flex flex-col gap-4">
+                    <h3 class="text-[10px] font-bold text-white/40 uppercase tracking-widest">Current Turn</h3>
+                    <div
+                        class="flex items-center gap-3 p-3 glass-panel rounded-xl border-l-4 border-jazz-magenta animate-breathing">
+                        <div
+                            class="size-10 rounded-full bg-jazz-magenta flex items-center justify-center font-bold text-white shadow-[0_0_15px_rgba(255,77,128,0.5)]">
+                            🔥</div>
+                        <div>
+                            <p class="text-sm font-bold text-white">Alex</p>
+                            <p class="text-xs text-jazz-magenta/80">Roll the dice!</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-3">
+                    <div class="flex justify-between items-center glass-panel p-3 rounded-lg border border-white/5">
+                        <span class="text-xs text-white/60">Skips Remaining</span>
+                        <span class="text-lg font-bold text-foreplay-gold">2</span>
+                    </div>
+                    <div
+                        class="flex justify-between items-center glass-panel p-3 rounded-lg border border-white/5 opacity-60">
+                        <span class="text-xs text-white/60">Safe Words</span>
+                        <span class="text-lg font-bold text-danger-red">1</span>
+                    </div>
+                </div>
+                <div class="flex-1 flex flex-col gap-3">
+                    <h3 class="text-[10px] font-bold text-white/40 uppercase tracking-widest">Action History</h3>
+                    <div class="flex flex-col gap-2 overflow-y-auto max-h-[300px] pr-2">
+                        <div class="text-xs p-2 bg-white/5 border-l-2 border-foreplay-gold rounded">
+                            <span class="text-foreplay-gold font-bold">P2:</span> Landed on Truth 🔮
+                        </div>
+                        <div class="text-xs p-2 bg-white/5 border-l-2 border-jazz-magenta rounded">
+                            <span class="text-jazz-magenta font-bold">P1:</span> Completed Dare 🎭
+                        </div>
+                    </div>
+                </div>
+            </aside>
+            <!-- Center: Board -->
+            <section
+                class="flex-1 flex items-center justify-center p-8 bg-[radial-gradient(circle_at_center,_#12182b_0%,_#04122e_100%)]">
+                <div
+                    class="relative max-w-[620px] w-full glass-panel p-6 rounded-[3rem] shadow-[0_40px_100px_rgba(0,0,0,0.8)] ring-1 ring-white/10">
+                    <div class="ludo-grid gap-1 bg-white/5 p-2 rounded-2xl overflow-hidden border border-white/10">
+                        <!-- P1 Home -->
+                        <div
+                            class="col-span-6 row-span-6 bg-jazz-magenta/5 border border-jazz-magenta/20 flex items-center justify-center relative rounded-tl-xl">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div
+                                    class="size-12 rounded-full bg-jazz-magenta shadow-[0_0_15px_rgba(255,77,128,0.6)] flex items-center justify-center text-xl animate-pulse">
+                                    🔥</div>
+                                <div class="size-12 rounded-full bg-jazz-magenta/20 border border-jazz-magenta/50">
+                                </div>
+                                <div class="size-12 rounded-full bg-jazz-magenta/20 border border-jazz-magenta/50">
+                                </div>
+                                <div class="size-12 rounded-full bg-jazz-magenta/20 border border-jazz-magenta/50">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Top Path -->
+                        <div class="col-span-3 row-span-6 grid grid-cols-3 grid-rows-6 gap-1 p-1">
+                            <div class="bg-night-black rounded-sm border border-white/5"></div>
+                            <div class="bg-night-black rounded-sm border border-white/5"></div>
+                            <div class="bg-night-black rounded-sm border border-white/5"></div>
+                            <!-- Dare Tile -->
+                            <div
+                                class="bg-secondary-container/20 rounded-sm flex items-center justify-center border-2 border-foreplay-gold animate-glow-pulse text-foreplay-gold text-2xl shadow-[0_0_20px_rgba(255,209,102,0.4)]">
+                                🎭</div>
+                            <div class="bg-secondary-fixed-dim/30 rounded-sm"></div>
+                            <div class="bg-night-black rounded-sm border border-white/5"></div>
+                            <!-- Neutrals -->
+                            <div class="bg-night-black rounded-sm"></div>
+                            <div class="bg-secondary-fixed-dim/30 rounded-sm"></div>
+                            <div class="bg-night-black rounded-sm"></div>
+                            <div class="bg-night-black rounded-sm"></div>
+                            <div class="bg-secondary-fixed-dim/30 rounded-sm"></div>
+                            <div class="bg-night-black rounded-sm"></div>
+                            <div class="bg-night-black rounded-sm"></div>
+                            <div class="bg-secondary-fixed-dim/30 rounded-sm"></div>
+                            <div class="bg-night-black rounded-sm"></div>
+                            <div class="bg-night-black rounded-sm"></div>
+                            <div class="bg-secondary-fixed-dim/30 rounded-sm"></div>
+                            <div class="bg-night-black rounded-sm"></div>
+                        </div>
+                        <!-- P2 Home -->
+                        <div
+                            class="col-span-6 row-span-6 bg-foreplay-gold/5 border border-foreplay-gold/20 flex items-center justify-center relative rounded-tr-xl">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div
+                                    class="size-12 rounded-full bg-foreplay-gold shadow-[0_0_15px_rgba(255,209,102,0.6)] flex items-center justify-center text-xl">
+                                    💋</div>
+                                <div
+                                    class="size-12 rounded-full bg-foreplay-gold shadow-[0_0_15px_rgba(255,209,102,0.6)] flex items-center justify-center text-xl">
+                                    💋</div>
+                                <div class="size-12 rounded-full bg-foreplay-gold/20 border border-foreplay-gold/50">
+                                </div>
+                                <div class="size-12 rounded-full bg-foreplay-gold/20 border border-foreplay-gold/50">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Left Path -->
+                        <div class="col-span-6 row-span-3 grid grid-cols-6 grid-rows-3 gap-1 p-1">
+                            <div class="bg-night-black rounded-sm border border-white/5"></div>
+                            <!-- Foreplay Special -->
+                            <div
+                                class="bg-primary-container/20 rounded-sm flex items-center justify-center border-2 border-jazz-magenta animate-glow-pulse text-jazz-magenta text-2xl shadow-[0_0_20px_rgba(255,77,128,0.4)]">
+                                ❤️‍🔥</div>
+                            <div class="bg-night-black rounded-sm border border-white/5"></div>
+                            <div class="bg-night-black rounded-sm"></div>
+                            <div class="bg-night-black rounded-sm"></div>
+                            <div class="bg-night-black rounded-sm"></div>
+                            <div class="bg-night-black rounded-sm"></div>
+                            <div class="bg-jazz-magenta/30 rounded-sm"></div>
+                            <div class="bg-jazz-magenta/30 rounded-sm"></div>
+                            <div class="bg-jazz-magenta/30 rounded-sm"></div>
+                            <div class="bg-jazz-magenta/30 rounded-sm"></div>
+                            <div class="bg-jazz-magenta/30 rounded-sm"></div>
+                            <div class="bg-night-black rounded-sm"></div>
+                            <div class="bg-night-black rounded-sm"></div>
+                            <div class="bg-night-black rounded-sm"></div>
+                            <div class="bg-night-black rounded-sm"></div>
+                            <div class="bg-night-black rounded-sm"></div>
+                            <div class="bg-night-black rounded-sm"></div>
+                        </div>
+                        <!-- Center -->
+                        <div
+                            class="col-span-3 row-span-3 bg-gradient-to-br from-jazz-magenta via-deep-blue to-foreplay-gold rounded-xl shadow-[inset_0_0_20px_rgba(0,0,0,0.5)] flex items-center justify-center border border-white/20">
+                            <span class="material-symbols-outlined text-white text-4xl"
+                                style="font-variation-settings: 'FILL' 1;">nightlight</span>
+                        </div>
+                        <!-- Right Path -->
+                        <div class="col-span-6 row-span-3 grid grid-cols-6 grid-rows-3 gap-1 p-1">
+                            <div class="bg-night-black rounded-sm"></div>
+                            <div class="bg-night-black rounded-sm"></div>
+                            <div class="bg-night-black rounded-sm"></div>
+                            <div class="bg-night-black rounded-sm"></div>
+                            <div class="bg-night-black rounded-sm"></div>
+                            <div class="bg-night-black rounded-sm"></div>
+                            <div class="bg-tertiary-container/30 rounded-sm"></div>
+                            <div class="bg-tertiary-container/30 rounded-sm"></div>
+                            <div class="bg-tertiary-container/30 rounded-sm"></div>
+                            <div class="bg-tertiary-container/30 rounded-sm"></div>
+                            <div class="bg-tertiary-container/30 rounded-sm"></div>
+                            <div class="bg-night-black rounded-sm"></div>
+                            <div class="bg-night-black rounded-sm"></div>
+                            <div class="bg-night-black rounded-sm"></div>
+                            <div class="bg-night-black rounded-sm"></div>
+                            <div class="bg-night-black rounded-sm"></div>
+                            <!-- Truth Tile -->
+                            <div
+                                class="bg-tertiary-container/20 rounded-sm flex items-center justify-center border-2 border-soft-pink animate-glow-pulse text-soft-pink text-2xl shadow-[0_0_20px_rgba(254,200,216,0.4)]">
+                                🔮</div>
+                            <div class="bg-night-black rounded-sm border border-white/5"></div>
+                        </div>
+                        <!-- P3 Home -->
+                        <div
+                            class="col-span-6 row-span-6 bg-tertiary/5 border border-tertiary/20 flex items-center justify-center relative rounded-bl-xl">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div
+                                    class="size-12 rounded-full bg-tertiary shadow-[0_0_15px_rgba(237,184,200,0.6)] flex items-center justify-center text-xl">
+                                    🖤</div>
+                                <div class="size-12 rounded-full bg-tertiary/20 border border-tertiary/50"></div>
+                                <div class="size-12 rounded-full bg-tertiary/20 border border-tertiary/50"></div>
+                                <div class="size-12 rounded-full bg-tertiary/20 border border-tertiary/50"></div>
+                            </div>
+                        </div>
+                        <!-- Bottom Path -->
+                        <div class="col-span-3 row-span-6 grid grid-cols-3 grid-rows-6 gap-1 p-1">
+                            <div class="bg-night-black rounded-sm"></div>
+                            <div class="bg-tertiary-container/30 rounded-sm"></div>
+                            <div class="bg-night-black rounded-sm"></div>
+                            <div class="bg-night-black rounded-sm"></div>
+                            <div class="bg-tertiary-container/30 rounded-sm"></div>
+                            <div class="bg-night-black rounded-sm"></div>
+                            <div class="bg-night-black rounded-sm"></div>
+                            <div class="bg-tertiary-container/30 rounded-sm"></div>
+                            <div class="bg-night-black rounded-sm"></div>
+                            <div class="bg-night-black rounded-sm"></div>
+                            <div class="bg-tertiary-container/30 rounded-sm"></div>
+                            <div class="bg-night-black rounded-sm"></div>
+                            <div class="bg-night-black rounded-sm"></div>
+                            <div class="bg-tertiary-container/30 rounded-sm"></div>
+                            <div class="bg-night-black rounded-sm"></div>
+                            <div class="bg-night-black rounded-sm"></div>
+                            <div class="bg-night-black rounded-sm"></div>
+                            <div class="bg-night-black rounded-sm"></div>
+                        </div>
+                        <!-- P4 Home -->
+                        <div
+                            class="col-span-6 row-span-6 bg-white/5 border border-white/10 flex items-center justify-center opacity-40 rounded-br-xl">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="size-12 rounded-full bg-white/10 border border-white/20"></div>
+                                <div class="size-12 rounded-full bg-white/10 border border-white/20"></div>
+                                <div class="size-12 rounded-full bg-white/10 border border-white/20"></div>
+                                <div class="size-12 rounded-full bg-white/10 border border-white/20"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Sidebar Right -->
+            <aside
+                class="w-80 bg-deep-blue/40 border-l border-white/10 p-8 flex flex-col items-center gap-8 justify-between backdrop-blur-sm">
+                <div class="w-full flex flex-col items-center gap-6">
+                    <h3 class="text-[10px] font-bold text-white/40 uppercase tracking-widest text-center">Your Roll</h3>
+                    <div class="relative group">
+                        <div
+                            class="size-32 bg-white rounded-3xl shadow-[0_20px_50px_rgba(255,255,255,0.1)] flex items-center justify-center border-4 border-jazz-magenta/30">
+                            <div class="grid grid-cols-3 grid-rows-3 gap-2">
+                                <div class="size-3 bg-night-black rounded-full"></div>
+                                <div></div>
+                                <div class="size-3 bg-night-black rounded-full"></div>
+                                <div></div>
+                                <div class="size-3 bg-night-black rounded-full"></div>
+                                <div></div>
+                                <div class="size-3 bg-night-black rounded-full"></div>
+                                <div></div>
+                                <div class="size-3 bg-night-black rounded-full"></div>
+                            </div>
+                        </div>
+                        <div
+                            class="absolute -top-3 -right-3 bg-jazz-magenta text-white text-[10px] px-3 py-1 rounded-full font-bold uppercase tracking-wider shadow-lg">
+                            Hot!</div>
+                    </div>
+                    <button
+                        class="w-full py-5 rounded-2xl bg-gradient-to-br from-jazz-magenta to-inverse-primary text-white font-bold text-xl shadow-[0_10px_25px_rgba(255,77,128,0.4)] transform transition-all active:scale-95 hover:brightness-110">
+                        ROLL!
+                    </button>
+                    <div
+                        class="flex items-center justify-between w-full glass-panel p-3 rounded-xl border border-white/5">
+                        <span class="text-xs text-white/60">Auto-roll</span>
+                        <div class="w-12 h-6 bg-white/10 rounded-full p-1 cursor-pointer flex justify-end">
+                            <div class="w-4 h-4 bg-jazz-magenta rounded-full shadow-[0_0_8px_rgba(255,77,128,0.6)]">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Legend -->
+                <div class="w-full bg-white/5 p-4 rounded-2xl border border-white/10 flex flex-col gap-4">
+                    <h4 class="text-[9px] font-bold uppercase tracking-[0.2em] text-white/40">Special Tiles</h4>
+                    <div class="flex items-center gap-4">
+                        <span class="text-2xl animate-glow-pulse" style="color: #FEC8D8">🔮</span>
+                        <p class="text-xs text-white/80"><span class="font-bold text-soft-pink">Truth</span>: Reveal a
+                            secret</p>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="text-2xl animate-glow-pulse" style="color: #FFD166">🎭</span>
+                        <p class="text-xs text-white/80"><span class="font-bold text-foreplay-gold">Dare</span>: Spicy
+                            act</p>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="text-2xl animate-glow-pulse" style="color: #FF4D80">❤️‍🔥</span>
+                        <p class="text-xs text-white/80"><span class="font-bold text-jazz-magenta">Foreplay</span>:
+                            Intensify</p>
+                    </div>
+                </div>
+                <div class="w-full text-center">
+                    <p class="text-[10px] text-white/30 leading-relaxed italic">
+                        Play with respect. Tap "Finish Now" anytime.
+                    </p>
+                </div>
+            </aside>
+        </main>
+    </div>
+</body>
+
+</html>

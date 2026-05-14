@@ -9,7 +9,7 @@ const H = ({ c }: { c: string }) => <span aria-hidden="true">{c}</span>;
 function HowToPlay() {
   const cleanup = useCleanup();
   useEffect(() => {
-    document.title = 'LibreLudo - How to Play';
+    document.title = 'Rules | Ludo Foreplay Night';
     cleanup();
   }, [cleanup]);
   return (
@@ -17,238 +17,83 @@ function HowToPlay() {
       <main className={styles.howToPlay}>
         <section className={styles.introduction}>
           <h1>
-            <H c="🎲" /> How to Play LibreLudo
+            <H c="🎲" /> Ludo Foreplay Night
           </h1>
           <p>
-            Welcome to the colorful world of LibreLudo! Whether you're new or need a refresher,
-            here's everything you need to know to play and win.
+            Welcome to a more intimate spin on the classic board game. The core goal remains the same: 
+            get your 4 tokens home. However, the journey is filled with sensual challenges, secrets, and rewards.
           </p>
         </section>
 
         <section className={styles.section}>
           <h2>
-            <H c="🎯" /> Objective
+            <H c="🎯" /> The Goal & The Reward
           </h2>
           <p>
-            Be the first to move all <strong>4 of your tokens</strong> from Base to the Home
-            Triangle by moving them in a clockwise path around the board.
+            Be the first to move all <strong>4 of your tokens</strong> into your Home Base. 
+            The winner gets to claim the <strong>Custom Reward</strong> agreed upon at the start of the night.
           </p>
         </section>
 
         <section className={styles.section}>
           <h2>
-            <H c="🧩" /> Game Components
+            <H c="✨" /> Special Tiles & Instant Dice
           </h2>
+          <p>
+            The board features special tiles that trigger intimate popups. 
+            Landing on them not only builds tension but grants you strategic advantages:
+          </p>
           <ul>
-            <li>Game board with cross-shaped track</li>
             <li>
-              4 Colors: <H c="🔵" /> Blue, <H c="🔴" /> Red, <H c="🟢" /> Green, <H c="🟡" /> Yellow
+              <strong>🔮 Truth Tiles:</strong> Answer a revealing question. Completing it grants you an <strong>instant dice value of 3</strong> (can be used to free a token from base!).
             </li>
-            <li>Each player has 4 tokens of the same color</li>
             <li>
-              Each player gets 1 six-sided die <H c="🎲" /> (numbers 1-6)
+              <strong>🎭 Dare Tiles:</strong> Perform a spicy action. Completing it grants you an <strong>instant dice value of 6</strong> (free a token or sprint ahead!).
             </li>
           </ul>
         </section>
 
         <section className={styles.section}>
           <h2>
-            <H c="👥" /> Players
+            <H c="⚔️" /> Capturing & The Loser's Choice
           </h2>
-          <ul>
-            <li>2 to 4 players</li>
-            <li>Each player picks a color</li>
-            <li>Can be played solo (vs. Bot) or with friends</li>
-          </ul>
-        </section>
-        <section className={styles.section}>
-          <h2>
-            <H c="🕹️" /> Quick Start Guide
-          </h2>
-          <ol>
-            <li>
-              Click{' '}
-              <Link to="/setup" className={styles.link}>
-                Play Now
-              </Link>{' '}
-              to open the setup screen.
-            </li>
-            <li>
-              Choose <strong>2</strong>, <strong>3</strong>, or <strong>4</strong> players using the
-              top tabs
-            </li>
-            <li>(Optional) Enter custom names for any player.</li>
-            <li>
-              Click the Person Icon <H c="👤" /> to toggle a player between Human and Bot{' '}
-              <H c="🤖" /> (the icon will change)
-            </li>
-            <li>
-              Tap <strong>PLAY</strong> to start the match!
-            </li>
-          </ol>
-        </section>
-        <section className={styles.section}>
-          <h2>
-            <H c="⌨️" /> Controls
-          </h2>
-          <ul>
-            <li>
-              Press <kbd>D</kbd> or click the dice to roll.
-            </li>
-            <li>Click a token to move it.</li>
-          </ul>
-        </section>
-        <section className={styles.section}>
-          <h2>
-            <H c="🎮" /> Gameplay Overview
-          </h2>
-          <h3>
-            <H c="🎬" /> Starting the Game
-          </h3>
-          <ul>
-            <li>Each player rolls the dice once.</li>
-            <li>Turns move clockwise.</li>
-          </ul>
-          <h3>
-            <H c="🚪" /> Getting Tokens Out
-          </h3>
-          <ul>
-            <li>
-              Roll a <strong>6</strong> to move a token from Base to the Start Square.
-            </li>
-            <li>You can only move a token from the base with a roll of 6.</li>
-          </ul>
-          <Note type="bonus">Rolling a 6 gives you an extra dice roll.</Note>
-          <h3>
-            <H c="🔁" /> Moving Tokens
-          </h3>
-          <ul>
-            <li>Move tokens forward the number of dice spaces rolled.</li>
-          </ul>
-          <Note type="important">
-            If you roll three sixes in a row in Ludo, your third roll is canceled and you lose your
-            turn.
-          </Note>
-        </section>
-        <section className={styles.section}>
-          <h2>
-            <H c="🧍" /> Token Rules
-          </h2>
-          <h3>
-            <H c="👥" /> Landing on Your Own Token
-          </h3>
-          <ul>
-            <li>You can land on or stack with your own tokens.</li>
-            <li>
-              Stacked tokens do <strong className={styles.highlightRed}>not</strong> block captures
-              or protect each other outside <strong>safe zones</strong>.
-            </li>
-          </ul>
-          <h3>
-            <H c="❌" /> Capturing Your Own Token
-          </h3>
-          <ul>
-            <li>
-              You <strong>cannot capture</strong> your own tokens.
-            </li>
-          </ul>
-          <h3>
-            <H c="🎯" /> Capturing Opponents
-          </h3>
-          <ul>
-            <li>
-              If you land on a square with an opponent's token (and it's not a safe zone), it's{' '}
-              <strong className={styles.highlightRed}>captured</strong> and sent to base.
-            </li>
-            <li>
-              You <strong>cannot</strong> capture tokens in safe zones.
-            </li>
-          </ul>
-          <Note type="important">
-            Landing on a <strong>non-safe</strong> square occupied by multiple opponent tokens
-            captures <strong>all</strong> of them.
-          </Note>
+          <p>
+            If your token lands exactly on an opponent's token, they are captured and sent back to base! 
+            In Foreplay Night, capturing gives the attacker a powerful choice:
+          </p>
           <Note type="bonus">
-            Capturing one or more opponent tokens in a single roll grants an{' '}
-            <strong>extra dice roll.</strong>
+            <strong>Post-Capture Options:</strong><br/>
+            1. Roll the dice again (Classic Ludo Rule).<br/>
+            2. <strong>Force your opponent</strong> to immediately draw a Truth or Dare card of your choice!
           </Note>
         </section>
+
         <section className={styles.section}>
           <h2>
-            <H c="⭐" /> Safe Zones
+            <H c="🎲" /> Classic Movement Rules
           </h2>
           <ul>
-            <li>
-              Special marked squares (<H c="⭐" /> or colored tiles).
-            </li>
-            <li>
-              Tokens here are safe and <strong>cannot be captured</strong>.
-            </li>
-            <li>Multiple tokens (even from different players) can share the same safe zone.</li>
+            <li>You must roll a <strong>6</strong> to move a token out of the base.</li>
+            <li>Tokens move clockwise based on the dice roll.</li>
+            <li>Rolling a 6 grants a bonus roll. (But don't roll three 6s in a row, or your turn ends!)</li>
+            <li>Tokens are safe from capture if they land on a <strong>Star Tile</strong>.</li>
           </ul>
         </section>
 
         <section className={styles.section}>
           <h2>
-            <H c="🏠" /> Reaching Home
+            <H c="🛑" /> Consent & Safety
           </h2>
-          <ul>
-            <li>After a full loop, enter the home column.</li>
-            <li>
-              If the roll is higher than needed, the token does{' '}
-              <strong className={styles.highlightRed}>not</strong> move.
-            </li>
-            <li>Tokens in the Home Triangle are safe and cannot be captured.</li>
-          </ul>
+          <p>
+            This game is designed to build intimacy, but comfort is the ultimate priority.
+            Either player can press the <strong>Finish Now</strong> button at any time to pause or end the game without questions asked.
+          </p>
         </section>
 
-        <section className={styles.section}>
-          <h2>
-            <H c="🏁" /> Winning the Game
-          </h2>
-          <ul>
-            <li>The first player to move all 4 tokens to their Home Triangle wins.</li>
-            <li>In 3-4 player games, others continue until only one player remains.</li>
-            <li>When the second-last player finishes, the remaining player is placed last.</li>
-            <li>
-              <strong>Final Rankings:</strong> 1st → 2nd → 3rd → Last (based on finish order).
-            </li>
-          </ul>
-        </section>
-
-        <section className={styles.section}>
-          <h2>
-            <H c="💡" /> Quick Tips
-          </h2>
-          <ul>
-            <li>
-              <H c="🚀" /> Get tokens out early - More options to move
-            </li>
-            <li>
-              <H c="↔" /> Spread Out Your Tokens - Stacking offers no protection on non-safe
-              squares.
-            </li>
-            <li>
-              <H c="🛑" /> Use safe zones - Only place where you're safe
-            </li>
-            <li>
-              <H c="👀" /> Watch your landings - Avoid capture range
-            </li>
-            <li>
-              <H c="🎯" /> Capture wisely - Delay opponents' progress
-            </li>
-            <li>
-              <H c="🏠" /> Advance steadily - Don't stall chasing others
-            </li>
-            <li>
-              <H c="🎲" /> Plan for exact rolls - Needed to reach home
-            </li>
-          </ul>
-        </section>
+        <Link to="/setup" className={styles.backLink}>
+          Start Playing
+        </Link>
       </main>
-      <Link className={styles.playNowBtn} to="/setup">
-        <H c="🔥" /> Play Now
-      </Link>
     </div>
   );
 }

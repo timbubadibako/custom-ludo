@@ -1,10 +1,20 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import type { TPlayerColour } from '../../types';
+
+export type TChallengeType = 'truth' | 'dare' | 'foreplay';
+
+export type TActiveChallenge = {
+  type: TChallengeType;
+  text: string;
+  playerColour: TPlayerColour;
+} | null;
 
 type TBoardState = {
   boardSideLength: number;
   boardTileSize: number;
   tokenHeight: number;
   tokenWidth: number;
+  activeChallenge: TActiveChallenge;
 };
 
 export const initialState: TBoardState = {
@@ -12,6 +22,7 @@ export const initialState: TBoardState = {
   boardTileSize: 0,
   tokenHeight: 0,
   tokenWidth: 0,
+  activeChallenge: null,
 };
 
 export const NUMBER_OF_BLOCKS_IN_ONE_ROW = 15;
@@ -25,6 +36,12 @@ const reducers = {
     state.tokenWidth =
       (action.payload / NUMBER_OF_BLOCKS_IN_ONE_ROW) * 0.8 * TOKEN_WIDTH_HEIGHT_RATIO;
   },
+  setActiveChallenge: (state: TBoardState, action: PayloadAction<TActiveChallenge>) => {
+    state.activeChallenge = action.payload;
+  },
+  clearActiveChallenge: (state: TBoardState) => {
+    state.activeChallenge = null;
+  },
   clearBoardState: () => initialState,
 };
 
@@ -34,6 +51,6 @@ const boardSlice = createSlice({
   reducers,
 });
 
-export const { resizeBoard, clearBoardState } = boardSlice.actions;
+export const { resizeBoard, setActiveChallenge, clearActiveChallenge, clearBoardState } = boardSlice.actions;
 
 export default boardSlice.reducer;

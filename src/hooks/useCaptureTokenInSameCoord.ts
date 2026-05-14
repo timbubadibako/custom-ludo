@@ -5,7 +5,7 @@ import {
   setIsAnyTokenMoving,
   setTokenAlignmentData,
 } from '../state/slices/playersSlice';
-import { type TCoordinate } from '../types';
+import { type TCoordinate, type TPlayerColour } from '../types';
 import { type TToken } from '../types';
 import { ERRORS } from '../utils/errors';
 import { areCoordsEqual } from '../game/coords/logic';
@@ -30,20 +30,22 @@ export function useCaptureTokenInSameCoord() {
   const store = useStore<RootState>();
 
   return useCallback(
-    (capturingToken: TToken, latestCoord: TCoordinate): Promise<boolean> => {
+    (capturingToken: TToken, latestCoord: TCoordinate): Promise<{ isCaptured: boolean; capturedColours: TPlayerColour[] }> => {
       return new Promise((resolve) => {
         if (capturingToken.isLocked)
           throw new Error(ERRORS.lockedToken(capturingToken.colour, capturingToken.id));
         const players = store.getState().players.players;
 
         if (TOKEN_SAFE_COORDINATES.find((c) => areCoordsEqual(c, latestCoord)))
-          return resolve(false);
+          return resolve({ isCaptured: false, capturedColours: [] });
 
         const capturableTokens = tokensWithCoord(latestCoord, players).filter(
           (t) => t.colour !== capturingToken.colour
         );
 
-        if (capturableTokens.length === 0) return resolve(false);
+        if (capturableTokens.length === 0) return resolve({ isCaptured: false, capturedColours: [] });
+
+        const capturedColours = Array.from(new Set(capturableTokens.map(t => t.colour)));
 
         capturableTokens.forEach(({ colour, id }) => {
           dispatch(
@@ -81,7 +83,7 @@ export function useCaptureTokenInSameCoord() {
                 dispatch(lockToken({ colour, id }));
                 tokenEl.removeEventListener('transitionend', handleTransitionEnd);
                 tokensSuccessfullyCaptured++;
-                if (tokensSuccessfullyCaptured === capturableTokens.length) resolve(true);
+                if (tokensSuccessfullyCaptured === capturableTokens.length) resolve({ isCaptured: true, capturedColours });
                 return;
               }
               const { x, y } = getPosition(tokenPath[index], defaultTokenAlignmentData);

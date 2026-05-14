@@ -1,140 +1,242 @@
-.player-setup {
+.playerSetup {
   height: 100vh;
   width: 100vw;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 1rem;
+  background: #04122e; /* Deep Blue from design.md */
+  background-image: 
+      radial-gradient(circle at top left, rgba(255, 77, 128, 0.1), transparent 40%),
+      radial-gradient(circle at bottom right, rgba(255, 209, 102, 0.08), transparent 40%);
+  overflow: hidden;
 }
-.player-setup-dialog {
+
+.topActions {
+  position: absolute;
+  top: 1rem;
+  left: 0;
+  right: 0;
+  padding: 0 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+}
+
+.iconBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.8rem;
+  height: 2.8rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  color: #fff;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(8px);
+}
+
+.iconBtn svg {
+  height: 1.4rem;
+  width: 1.4rem;
+}
+
+.iconBtn:hover {
+  background: rgba(255, 77, 128, 0.2);
+  border-color: #ff4d80;
+  transform: scale(1.1);
+}
+
+.setupLayout {
+  display: flex;
+  gap: 1.5rem;
+  align-items: stretch;
+  max-height: 90vh;
+}
+
+.playerSetupDialog {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 55vh;
-  width: auto;
-  aspect-ratio: 1.8 / 1.5;
-  background-color: white;
-  border-radius: 3%;
-  overflow: hidden;
-  -moz-box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.75);
-  -webkit-box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.75);
-  box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.75);
+  width: min(100%, 40rem);
+  border-radius: 2rem;
+  gap: 1rem;
+  padding: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #121f3b; /* surface-container */
+  backdrop-filter: blur(20px);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
 }
-.player-count-selector {
-  position: relative;
-  height: 9%;
+
+.setupIntro {
+  width: 100%;
+  text-align: center;
+}
+
+.setupKicker {
+  margin: 0 0 0.5rem;
+  color: #edc157; /* Foreplay Gold */
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.setupIntro h1 {
+  margin: 0;
+  color: #fafafa;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1.8rem;
+  line-height: 1.2;
+}
+
+.vibeQuickSelect {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.vibeChip {
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.vibeChipActive {
+  background: rgba(255, 77, 128, 0.2);
+  border-color: #ff4d80;
+  color: #ff4d80;
+}
+
+.playerCountSelector {
   width: 100%;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  border-bottom: 1px solid #aaa;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 0.4rem;
+  border-radius: 1.25rem;
 }
 
-.player-count-selector::before {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  height: 12.5%;
-  width: calc(var(--dialog-width) / 3);
-  background-color: var(--color-primary);
-  border-radius: 10px;
-  transform: translateX(calc(var(--dialog-width) / 3 * (var(--player-count) - 2)));
-  transition: transform 250ms ease;
-  z-index: 10;
-}
-.player-count {
-  background: none;
+.playerCountBtn {
+  padding: 0.6rem;
+  border-radius: 0.8rem;
   border: none;
-  font-size: calc(var(--dialog-width) / 23);
-  transition:
-    background-color 250ms ease-in-out,
-    font-size 100ms ease;
-  user-select: none;
-}
-.player-count:hover {
-  background-color: #ddd;
+  background: transparent;
+  color: #fafafa;
+  font-weight: 700;
+  font-size: 0.9rem;
   cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.player-count:active {
-  font-size: calc(var(--dialog-width) / 26);
+.playerCountActive {
+  background: #ff4d80;
+  color: #fff;
 }
-.player-inputs {
-  padding-top: calc(var(--dialog-width) / 20);
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  justify-content: space-evenly;
-  flex-direction: column;
+
+.playerCountLocked {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
+.playerInputs {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  overflow-y: auto;
+  max-height: 45vh;
 }
 
-.play-btn {
-  height: auto;
-  background-color: var(--color-primary);
+.playBtn {
+  width: 100%;
+  background: #ff4d80;
   color: white;
   border: none;
-  font-size: calc(var(--dialog-width) / 17);
-  margin-top: calc(var(--dialog-width) / 35);
-  margin-bottom: calc(var(--dialog-width) / 25);
-  padding-block: calc(var(--dialog-width) / 40);
-  padding-inline: calc(var(--dialog-width) / 20);
-  border-radius: calc(var(--dialog-width) / 45);
-  transition:
-    background-color 0.2s ease,
-    transform 0.2s ease;
+  font-size: 1.25rem;
+  font-weight: 800;
+  padding: 1.25rem;
+  border-radius: 999px;
   text-decoration: none;
-  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s ease;
+  box-shadow: 0 10px 30px rgba(255, 77, 128, 0.25);
+  margin-top: auto;
 }
-.play-btn:hover,
-.play-btn:active,
-.play-btn:focus-visible {
-  background-color: var(--color-primary-hover);
-  transform: scale(1.05);
+
+.playBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 40px rgba(255, 77, 128, 0.35);
+}
+
+.rewardPanel {
+  width: 18rem;
+  display: flex;
+  flex-direction: column;
+  padding: 2.5rem 2rem;
+  background: #121f3b;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 2rem;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+}
+
+.rewardInput {
+  flex: 0 0 150px; /* Reduced height fixed */
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  padding: 1rem;
+  color: #fff;
+  font-family: inherit;
+  font-size: 1rem;
+  resize: none;
+  margin: 0.75rem 0;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.rewardInput:focus {
+  border-color: #ff4d80;
+}
+
+.setupNote {
+  color: #d9e2ff;
+  font-size: 0.85rem;
+  opacity: 0.6;
+  margin: 0 0 1.5rem;
+  text-align: center;
 }
 
 .version {
   position: absolute;
-  bottom: 0;
-  right: 0;
-  padding: calc(var(--dialog-width) / 60);
-  font-size: calc(var(--dialog-width) / 30);
-  color: rgba(0, 0, 0, 0.65);
+  bottom: 0.75rem;
+  right: 1.5rem;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.2);
 }
 
-.go-to-home {
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-color: var(--color-primary);
-  color: white;
-  border: none;
-  height: 2rem;
-  width: 2rem;
-  border-bottom-right-radius: 0.25em;
-  cursor: pointer;
-  text-decoration: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
-  transition:
-    background-color 0.2s ease,
-    transform 0.1s ease;
-}
-
-.go-to-home > svg {
-  height: 1.6rem;
-}
-
-.go-to-home:hover,
-.go-to-home:active,
-.go-to-home:focus-visible {
-  background-color: var(--color-primary-hover);
-}
-
-@media only screen and (max-width: calc(1.8 / 1.5 * 60vh)) {
-  .player-setup-dialog {
+@media (max-width: 1000px) {
+  .setupLayout {
+    flex-direction: column;
+    overflow-y: auto;
+    padding-bottom: 2rem;
+  }
+  .rewardPanel {
+    width: 100%;
     height: auto;
-    width: 92vw;
+  }
+  .rewardInput {
+    flex: 0 0 100px;
   }
 }
