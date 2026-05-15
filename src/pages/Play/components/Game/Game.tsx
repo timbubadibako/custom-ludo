@@ -15,6 +15,17 @@ import { useNavigate } from 'react-router-dom';
 import { playerCountToWord } from '../../../../game/players/logic';
 import { usePageLeaveBlocker } from '../../../../hooks/usePageLeaveBlocker';
 import { addToGameInactiveTime, setGameStartTime } from '../../../../state/slices/sessionSlice';
+import { forceDiceNumber } from '../../../../state/slices/diceSlice';
+import { 
+    type TChallengeType, 
+    setActiveChallenge, 
+    setLevel, 
+    resetChallengesCount, 
+    incrementCompletedChallenges 
+} from '../../../../state/slices/boardSlice';
+import ForeplayActionModal from '../ForeplayActionModal/ForeplayActionModal';
+import CaptureActionModal from '../CaptureActionModal/CaptureActionModal';
+import ExitConfirmationModal from '../ExitConfirmationModal/ExitConfirmationModal';
 import styles from './Game.module.css';
 import clsx from 'clsx';
 
@@ -26,7 +37,7 @@ type Props = {
 
 function Game({ initData }: Props) {
   const dispatch = useDispatch<AppDispatch>();
-  const { draftPlayers } = useSelector((state: RootState) => state.session);
+  const { vibe, draftPlayers } = useSelector((state: RootState) => state.session);
   const boardTileSize = useSelector((state: RootState) => state.board.boardTileSize);
   const { dice } = useSelector((state: RootState) => state.dice);
   const { playerSequence, isGameEnded, playerFinishOrder, currentPlayerColour, players } =
@@ -36,6 +47,7 @@ function Game({ initData }: Props) {
   const navigate = useNavigate();
   const moveAndCapture = useMoveAndCaptureToken();
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [showExitModal, setShowExitModal] = useState(false);
   usePageLeaveBlocker(!isGameEnded && import.meta.env.PROD);
   
   useEffect(() => {
@@ -85,10 +97,26 @@ function Game({ initData }: Props) {
     dispatch(handlePostDiceRollThunk(colour, diceNumber, moveAndCapture));
   };
 
+  const handleChallengeComplete = (type: TChallengeType, performerColour: TPlayerColour, isManual?: boolean) => {
+    if (!isManual) return; // Natural landings don't get bonus dice
+
+    const bonusDice = type === 'dare' ? 6 : 3;
+    dispatch(forceDiceNumber({ colour: performerColour, number: bonusDice }));
+    // Pass true as a 4th param to indicate this is a reward roll from a challenge
+    dispatch(handlePostDiceRollThunk(performerColour, bonusDice, moveAndCapture, true));
+  };
+
   const handleExitBtnClick = () => {
-    if (window.confirm('Exit the night? Progress will be lost.')) {
-      navigate('/');
-    }
+    setShowExitModal(true);
+  };
+
+  const confirmExit = () => {
+    setShowExitModal(false);
+    navigate('/');
+  };
+
+  const cancelExit = () => {
+    setShowExitModal(false);
   };
 
   const toggleFullscreen = () => {
@@ -101,6 +129,59 @@ function Game({ initData }: Props) {
     }
   };
 
+  const [pendingManualChallenge, setPendingManualChallenge] = useState<TChallengeType | null>(null);
+
+  const { activeChallenge, currentLevel, completedChallengesCount } = useSelector(
+    (state: RootState) => state.board
+  );
+
+  const handleManualDeckClick = (type: TChallengeType) => {
+    // Only allow clicking if it's currently a player's turn (not a bot)
+    const currentPlayerObj = players.find((p) => p.colour === currentPlayerColour);
+    if (!currentPlayerObj || currentPlayerObj.isBot) return;
+
+    // Prevent if tokens are already active (already rolled) or another challenge is pending
+    const anyTokenActive = players.some((p) => p.tokens.some((t) => t.isActive));
+    if (anyTokenActive || pendingManualChallenge || activeChallenge) return;
+
+    setPendingManualChallenge(type);
+  };
+
+  const confirmManualChallenge = () => {
+    if (!pendingManualChallenge || !currentPlayerColour) return;
+
+    // Import CHALLENGE_DATA and randomly select
+    const levelKey = `level${currentLevel}` as 'level1' | 'level2' | 'level3';
+
+    import('../../../../game/coords/challengeData').then(({ CHALLENGE_DATA }) => {
+      const pool = CHALLENGE_DATA[vibe][pendingManualChallenge][levelKey];
+      const randomText = pool[Math.floor(Math.random() * pool.length)];
+
+      dispatch(
+        setActiveChallenge({
+          type: pendingManualChallenge,
+          text: randomText,
+          playerColour: currentPlayerColour,
+          isManual: true,
+        })
+      );
+
+      // Leveling logic
+      if (completedChallengesCount >= pool.length - 3 && currentLevel < 3) {
+        dispatch(setLevel(currentLevel + 1));
+        dispatch(resetChallengesCount());
+      } else {
+        dispatch(incrementCompletedChallenges());
+      }
+
+      setPendingManualChallenge(null);
+    });
+  };
+
+  const cancelManualChallenge = () => {
+    setPendingManualChallenge(null);
+  };
+
   return (
     <div
       className={styles.game}
@@ -110,6 +191,21 @@ function Game({ initData }: Props) {
         } as React.CSSProperties
       }
     >
+      {pendingManualChallenge && (
+        <div className={styles.manualChallengeOverlay}>
+          <div className={styles.manualChallengeModal}>
+            <h3>Use a Special Method?</h3>
+            <p>
+              Take a <strong>{pendingManualChallenge.toUpperCase()}</strong> challenge now to instantly get a guaranteed dice roll of <strong>{pendingManualChallenge === 'dare' ? 6 : 3}</strong>.
+            </p>
+            <div className={styles.manualChallengeActions}>
+              <button className={styles.btnCancel} onClick={cancelManualChallenge}>Nevermind</button>
+              <button className={styles.btnConfirm} onClick={confirmManualChallenge}>Bring it on!</button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className={styles.fabMenu}>
         <button 
           type="button" 
@@ -156,7 +252,10 @@ function Game({ initData }: Props) {
         <section className={styles.boardStage}>
           <div className={styles.boardAligner}>
             {/* Truth Deck - Top Left */}
-            <div className={clsx(styles.deckMiniWrap, styles.deckTopLeft)}>
+            <div 
+              className={clsx(styles.deckMiniWrap, styles.deckTopLeft)}
+              onClick={() => handleManualDeckClick('truth')}
+            >
               <div className={styles.cardBackMini} />
               <div className={clsx(styles.topCardMini, styles.truthCard)}>🔮 Truth</div>
             </div>
@@ -164,7 +263,10 @@ function Game({ initData }: Props) {
             <Board />
 
             {/* Dare Deck - Bottom Right */}
-            <div className={clsx(styles.deckMiniWrap, styles.deckBottomRight)}>
+            <div 
+              className={clsx(styles.deckMiniWrap, styles.deckBottomRight)}
+              onClick={() => handleManualDeckClick('dare')}
+            >
               <div className={styles.cardBackMini} />
               <div className={clsx(styles.topCardMini, styles.dareCard)}>🎭 Dare</div>
             </div>
@@ -195,6 +297,13 @@ function Game({ initData }: Props) {
 
       </main>
 
+      <ForeplayActionModal onComplete={handleChallengeComplete} />
+      <CaptureActionModal />
+      <ExitConfirmationModal 
+        isOpen={showExitModal}
+        onConfirm={confirmExit}
+        onCancel={cancelExit}
+      />
       {isGameEnded && <GameFinishedScreen playerFinishOrder={playerFinishOrder} />}
     </div>
   );

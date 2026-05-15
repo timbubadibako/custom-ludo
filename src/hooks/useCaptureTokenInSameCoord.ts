@@ -22,6 +22,7 @@ import { TOKEN_SAFE_COORDINATES } from '../game/tokens/constants';
 import { getTokenDOMId, tokensWithCoord } from '../game/tokens/logic';
 import { tokenPaths } from '../game/tokens/paths';
 import { sleep } from '../utils/sleep';
+import { playSFX, SFX } from '../utils/audio';
 
 export function useCaptureTokenInSameCoord() {
   const dispatch = useDispatch();
@@ -45,7 +46,8 @@ export function useCaptureTokenInSameCoord() {
 
         if (capturableTokens.length === 0) return resolve({ isCaptured: false, capturedColours: [] });
 
-        const capturedColours = Array.from(new Set(capturableTokens.map(t => t.colour)));
+        playSFX(SFX.CAPTURE);
+        const capturedColours = Array.from(new Set(capturableTokens.map((t) => t.colour)));
 
         capturableTokens.forEach(({ colour, id }) => {
           dispatch(

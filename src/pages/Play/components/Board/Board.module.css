@@ -2,15 +2,13 @@
     position: relative;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
     border-radius: 1.5rem;
-    overflow: hidden;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    display: flex;
-    width: 100%;
-    max-width: 90vw; /* Limit on mobile */
-    max-height: 55vh; /* Keep it from taking over the whole height */
-    aspect-ratio: 1 / 1;
+    width: min(90vw, 55vh);
+    height: min(90vw, 55vh);
     margin: 0 auto;
+    flex-shrink: 0;
+    overflow: hidden; /* Clips the board and markers to rounded corners */
 }
 
 .board {

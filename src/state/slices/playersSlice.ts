@@ -81,6 +81,11 @@ const reducers = {
 
   changeTurn: (state: TPlayerState) => {
     const { currentPlayerColour, playerSequence } = state;
+    if (currentPlayerColour) {
+      const prevPlayer = state.players.find((p) => p.colour === currentPlayerColour);
+      if (prevPlayer) prevPlayer.tokens.forEach((t) => (t.isActive = false));
+    }
+    
     if (!currentPlayerColour) {
       state.currentPlayerColour = 'blue';
       return;

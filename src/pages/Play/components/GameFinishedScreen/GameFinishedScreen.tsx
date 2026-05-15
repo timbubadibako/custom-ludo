@@ -6,12 +6,19 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import styles from './GameFinishedScreen.module.css';
 
+import { useEffect } from 'react';
+import { playSFX, SFX } from '../../../../utils/audio';
+
 type Props = {
   playerFinishOrder: TPlayerNameAndColour[];
 };
 
 function GameFinishedScreen({ playerFinishOrder }: Props) {
   const { width, height } = useWindowSize();
+
+  useEffect(() => {
+    playSFX(SFX.VICTORY);
+  }, []);
   return (
     <AnimatePresence>
       <motion.div className={styles.gameFinishedScreen}>

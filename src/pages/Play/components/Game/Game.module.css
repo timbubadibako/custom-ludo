@@ -77,7 +77,7 @@
   background: transparent;
   transition: all 0.3s ease;
   flex-shrink: 0;
-  max-width: 65vh; /* Align with board width */
+  max-width: 55vh; /* Match board width */
   margin: 0 auto;
 }
 
@@ -178,7 +178,7 @@
   justify-content: center;
   height: 100%;
   width: 100%;
-  max-width: 75vh;
+  max-width: 55vh; /* Match board width */
   gap: 0.5rem;
 }
 
@@ -200,6 +200,82 @@
 .deckBottomRight {
   align-self: flex-end;
   margin-right: 1rem;
+}
+
+.manualChallengeOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 11, 31, 0.85);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 1.5rem;
+}
+
+.manualChallengeModal {
+  background: #121f3b;
+  border: 2px solid #ff4d80;
+  border-radius: 1.5rem;
+  padding: 2rem;
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.manualChallengeModal h3 {
+  margin: 0 0 1rem;
+  color: #fafafa;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1.5rem;
+}
+
+.manualChallengeModal p {
+  color: #d9e2ff;
+  line-height: 1.5;
+  margin-bottom: 2rem;
+}
+
+.manualChallengeModal strong {
+  color: #ff4d80;
+}
+
+.manualChallengeActions {
+  display: flex;
+  gap: 1rem;
+}
+
+.manualChallengeActions button {
+  flex: 1;
+  padding: 1rem;
+  border-radius: 999px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btnCancel {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  color: #fff;
+}
+
+.btnCancel:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.btnConfirm {
+  background: #ff4d80;
+  color: #fff;
+  box-shadow: 0 5px 15px rgba(255, 77, 128, 0.3);
+}
+
+.btnConfirm:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 77, 128, 0.4);
 }
 
 .cardBackMini {

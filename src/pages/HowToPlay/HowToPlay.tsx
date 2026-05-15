@@ -1,10 +1,61 @@
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
-import Note from '../../components/Note/Note';
 import styles from './HowToPlay.module.css';
 import { useCleanup } from '../../hooks/useCleanup';
+import { motion } from 'framer-motion';
 
-const H = ({ c }: { c: string }) => <span aria-hidden="true">{c}</span>;
+const H = ({ c }: { c: string }) => <span className={styles.icon} aria-hidden="true">{c}</span>;
+
+const rules = [
+    {
+        title: "The Goal",
+        icon: "🎯",
+        content: "Be the first to move all 4 of your tokens into your Home Base. The winner claims the agreed Reward."
+    },
+    {
+        title: "Strategic Challenges",
+        icon: "✨",
+        content: "Land on special tiles or pick from decks. Taking a challenge grants fixed moves (3 for Truth, 6 for Dare)."
+    },
+    {
+        title: "Capturing",
+        icon: "⚔️",
+        content: "Capture an opponent to send them back. Choose your reward: Roll Again or Force them to draw a Dare card."
+    },
+    {
+        title: "The Greedy Rule",
+        icon: "⚠️",
+        content: "Rolling a 6 three times in a row ends your turn immediately and forces a mandatory Truth challenge!"
+    },
+    {
+        title: "Safe Zones",
+        icon: "⭐",
+        content: "Tokens are completely safe from being captured when they land on a Star Tile."
+    },
+    {
+        title: "Safe Word",
+        icon: "🛑",
+        content: "Use the 'Finish Now' button at any time to pause or end the session instantly with no questions asked."
+    }
+];
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1
+  }
+};
 
 function HowToPlay() {
   const cleanup = useCleanup();
@@ -12,88 +63,60 @@ function HowToPlay() {
     document.title = 'Rules | Ludo Foreplay Night';
     cleanup();
   }, [cleanup]);
+
   return (
     <div className={styles.howToPlayContainer}>
-      <main className={styles.howToPlay}>
-        <section className={styles.introduction}>
-          <h1>
-            <H c="🎲" /> Ludo Foreplay Night
-          </h1>
-          <p>
-            Welcome to a more intimate spin on the classic board game. The core goal remains the same: 
-            get your 4 tokens home. However, the journey is filled with sensual challenges, secrets, and rewards.
-          </p>
-        </section>
+      <header className={styles.header}>
+        <motion.h1 
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+        >
+          <H c="🎲" /> Rulebook
+        </motion.h1>
+        <motion.p 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className={styles.subtitle}
+        >
+          Master the art of the game and the night.
+        </motion.p>
+      </header>
 
-        <section className={styles.section}>
-          <h2>
-            <H c="🎯" /> The Goal & The Reward
-          </h2>
-          <p>
-            Be the first to move all <strong>4 of your tokens</strong> into your Home Base. 
-            The winner gets to claim the <strong>Custom Reward</strong> agreed upon at the start of the night.
-          </p>
-        </section>
+      <motion.main 
+        className={styles.rulesGrid}
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        {rules.map((rule, i) => (
+          <motion.section 
+            key={i} 
+            className={styles.ruleCard}
+            variants={itemVariants}
+          >
+            <div className={styles.cardHeader}>
+              <span className={styles.cardIcon}>{rule.icon}</span>
+              <h2>{rule.title}</h2>
+            </div>
+            <p>{rule.content}</p>
+          </motion.section>
+        ))}
+      </motion.main>
 
-        <section className={styles.section}>
-          <h2>
-            <H c="✨" /> Special Tiles & Instant Dice
-          </h2>
-          <p>
-            The board features special tiles that trigger intimate popups. 
-            Landing on them not only builds tension but grants you strategic advantages:
-          </p>
-          <ul>
-            <li>
-              <strong>🔮 Truth Tiles:</strong> Answer a revealing question. Completing it grants you an <strong>instant dice value of 3</strong> (can be used to free a token from base!).
-            </li>
-            <li>
-              <strong>🎭 Dare Tiles:</strong> Perform a spicy action. Completing it grants you an <strong>instant dice value of 6</strong> (free a token or sprint ahead!).
-            </li>
-          </ul>
-        </section>
-
-        <section className={styles.section}>
-          <h2>
-            <H c="⚔️" /> Capturing & The Loser's Choice
-          </h2>
-          <p>
-            If your token lands exactly on an opponent's token, they are captured and sent back to base! 
-            In Foreplay Night, capturing gives the attacker a powerful choice:
-          </p>
-          <Note type="bonus">
-            <strong>Post-Capture Options:</strong><br/>
-            1. Roll the dice again (Classic Ludo Rule).<br/>
-            2. <strong>Force your opponent</strong> to immediately draw a Truth or Dare card of your choice!
-          </Note>
-        </section>
-
-        <section className={styles.section}>
-          <h2>
-            <H c="🎲" /> Classic Movement Rules
-          </h2>
-          <ul>
-            <li>You must roll a <strong>6</strong> to move a token out of the base.</li>
-            <li>Tokens move clockwise based on the dice roll.</li>
-            <li>Rolling a 6 grants a bonus roll. (But don't roll three 6s in a row, or your turn ends!)</li>
-            <li>Tokens are safe from capture if they land on a <strong>Star Tile</strong>.</li>
-          </ul>
-        </section>
-
-        <section className={styles.section}>
-          <h2>
-            <H c="🛑" /> Consent & Safety
-          </h2>
-          <p>
-            This game is designed to build intimacy, but comfort is the ultimate priority.
-            Either player can press the <strong>Finish Now</strong> button at any time to pause or end the game without questions asked.
-          </p>
-        </section>
-
+      <motion.div 
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.8 }}
+        className={styles.actions}
+      >
         <Link to="/setup" className={styles.backLink}>
           Start Playing
         </Link>
-      </main>
+        <Link to="/" className={styles.homeLink}>
+          Back to Home
+        </Link>
+      </motion.div>
     </div>
   );
 }

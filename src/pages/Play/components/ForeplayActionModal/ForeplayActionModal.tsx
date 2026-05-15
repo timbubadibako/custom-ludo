@@ -1,19 +1,28 @@
 import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
 import type { RootState } from '../../../../state/store';
 import { clearActiveChallenge } from '../../../../state/slices/boardSlice';
 import styles from './ForeplayActionModal.module.css';
 import clsx from 'clsx';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { TChallengeType } from '../../../../state/slices/boardSlice';
+import type { TPlayerColour } from '../../../../types';
+import { playSFX, SFX } from '../../../../utils/audio';
 
 type Props = {
-  onComplete: (type: TChallengeType) => void;
+  onComplete: (type: TChallengeType, performerColour: TPlayerColour, isManual?: boolean) => void;
 };
 
 function ForeplayActionModal({ onComplete }: Props) {
   const dispatch = useDispatch();
   const { activeChallenge } = useSelector((state: RootState) => state.board);
   const { players } = useSelector((state: RootState) => state.players);
+
+  useEffect(() => {
+    if (activeChallenge) {
+        playSFX(SFX.CHALLENGE_OPEN);
+    }
+  }, [activeChallenge]);
 
   if (!activeChallenge) return null;
 
@@ -23,15 +32,14 @@ function ForeplayActionModal({ onComplete }: Props) {
     switch (activeChallenge.type) {
       case 'truth': return '🔮 Truth Revealed';
       case 'dare': return '🎭 Spicy Dare';
-      case 'foreplay': return '❤️‍🔥 Foreplay Heat';
       default: return 'Challenge';
     }
   };
 
   const handleComplete = () => {
-    const type = activeChallenge.type;
+    const { type, playerColour, isManual } = activeChallenge;
     dispatch(clearActiveChallenge());
-    onComplete(type);
+    onComplete(type, playerColour, isManual);
   };
 
   return (

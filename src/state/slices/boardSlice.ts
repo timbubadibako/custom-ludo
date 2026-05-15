@@ -1,12 +1,18 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { TPlayerColour } from '../../types';
 
-export type TChallengeType = 'truth' | 'dare' | 'foreplay';
+export type TChallengeType = 'truth' | 'dare';
+
+export type TPendingCapture = {
+  opponentColour: TPlayerColour;
+  tokenColour: TPlayerColour;
+} | null;
 
 export type TActiveChallenge = {
   type: TChallengeType;
   text: string;
   playerColour: TPlayerColour;
+  isManual?: boolean;
 } | null;
 
 type TBoardState = {
@@ -15,6 +21,9 @@ type TBoardState = {
   tokenHeight: number;
   tokenWidth: number;
   activeChallenge: TActiveChallenge;
+  pendingCapture: TPendingCapture;
+  currentLevel: number;
+  completedChallengesCount: number;
 };
 
 export const initialState: TBoardState = {
@@ -23,6 +32,9 @@ export const initialState: TBoardState = {
   tokenHeight: 0,
   tokenWidth: 0,
   activeChallenge: null,
+  pendingCapture: null,
+  currentLevel: 1,
+  completedChallengesCount: 0,
 };
 
 export const NUMBER_OF_BLOCKS_IN_ONE_ROW = 15;
@@ -39,8 +51,20 @@ const reducers = {
   setActiveChallenge: (state: TBoardState, action: PayloadAction<TActiveChallenge>) => {
     state.activeChallenge = action.payload;
   },
+  setPendingCapture: (state: TBoardState, action: PayloadAction<TPendingCapture>) => {
+    state.pendingCapture = action.payload;
+  },
   clearActiveChallenge: (state: TBoardState) => {
     state.activeChallenge = null;
+  },
+  incrementCompletedChallenges: (state: TBoardState) => {
+    state.completedChallengesCount += 1;
+  },
+  setLevel: (state: TBoardState, action: PayloadAction<number>) => {
+    state.currentLevel = action.payload;
+  },
+  resetChallengesCount: (state: TBoardState) => {
+    state.completedChallengesCount = 0;
   },
   clearBoardState: () => initialState,
 };
@@ -51,6 +75,15 @@ const boardSlice = createSlice({
   reducers,
 });
 
-export const { resizeBoard, setActiveChallenge, clearActiveChallenge, clearBoardState } = boardSlice.actions;
+export const { 
+    resizeBoard, 
+    setActiveChallenge, 
+    setPendingCapture, 
+    clearActiveChallenge, 
+    incrementCompletedChallenges,
+    setLevel,
+    resetChallengesCount,
+    clearBoardState 
+} = boardSlice.actions;
 
 export default boardSlice.reducer;

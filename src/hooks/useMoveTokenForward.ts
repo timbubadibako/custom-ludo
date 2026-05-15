@@ -15,6 +15,7 @@ import { FORWARD_TOKEN_TRANSITION_TIME } from '../game/tokens/constants';
 import { tokenPaths } from '../game/tokens/paths';
 import { getTokenDOMId } from '../game/tokens/logic';
 import type { TMoveTokenCompletionData } from '../types/tokens';
+import { playSFX, SFX } from '../utils/audio';
 
 export const useMoveTokenForward = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -59,11 +60,13 @@ export const useMoveTokenForward = () => {
           }
           i++;
           count++;
+          playSFX(SFX.PAWN_STEP);
           dispatch(updateTokenPositionAndAlignmentThunk({ colour, id, newCoords: tokenPath[i] }));
         };
         // Trigger the first transition
         i++;
         count++;
+        playSFX(SFX.PAWN_STEP);
         dispatch(updateTokenPositionAndAlignmentThunk({ colour, id, newCoords: tokenPath[i] }));
         tokenEl.addEventListener('transitionend', handleTransitionEnd);
       });

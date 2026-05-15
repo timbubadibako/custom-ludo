@@ -1,0 +1,72 @@
+.modalOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(4, 11, 31, 0.9);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5000;
+    padding: 1.5rem;
+}
+
+.modalContent {
+    background: #121f3b;
+    border: 1px solid rgba(255, 77, 128, 0.3);
+    border-radius: 2rem;
+    padding: 3rem;
+    max-width: 450px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+}
+
+.title {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 2rem;
+    color: #fafafa;
+    margin-bottom: 1.5rem;
+}
+
+.description {
+    color: #d9e2ff;
+    line-height: 1.6;
+    margin-bottom: 2.5rem;
+    opacity: 0.8;
+}
+
+.actions {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.cancelBtn, .confirmBtn {
+    flex: 1;
+    padding: 1.2rem;
+    border-radius: 999px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.cancelBtn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #fff;
+}
+
+.confirmBtn {
+    background: #e63946; /* Danger Red */
+    color: #fff;
+    box-shadow: 0 10px 20px rgba(230, 57, 70, 0.3);
+}
+
+.cancelBtn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.confirmBtn:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}

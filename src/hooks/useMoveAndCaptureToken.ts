@@ -1,5 +1,6 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useStore, useDispatch, useSelector } from 'react-redux';
 import { deactivateAllTokens } from '../state/slices/playersSlice';
+import { setPendingCapture } from '../state/slices/boardSlice';
 import { type TToken } from '../types';
 import { useCaptureTokenInSameCoord } from './useCaptureTokenInSameCoord';
 import { useMoveTokenForward } from './useMoveTokenForward';
@@ -13,6 +14,7 @@ export function useMoveAndCaptureToken() {
   const moveToken = useMoveTokenForward();
   const captureToken = useCaptureTokenInSameCoord();
   const dispatch = useDispatch();
+  const store = useStore<RootState>();
   const { vibe } = useSelector((state: RootState) => state.session);
 
   return useCallback(
@@ -30,28 +32,26 @@ export function useMoveAndCaptureToken() {
 
       // Logic: Trigger Special Tile if landed on one
       if (!hasTokenReachedHome) {
-        triggerSpecialTile(lastTokenCoord, vibe, token.colour, dispatch);
+        triggerSpecialTile(lastTokenCoord, vibe, token.colour, dispatch, store.getState());
       }
 
       const { isCaptured, capturedColours } = await captureToken(token, lastTokenCoord);
       
       if (isCaptured && capturedColours.length > 0) {
-        const wantsToRollAgain = window.confirm(`You captured ${capturedColours.join(', ')}!\n\nClick [OK] to Roll Again.\nClick [Cancel] to Force them to take a Dare!`);
+        const opponentColour = capturedColours[0];
+        // Open the custom CaptureActionModal instead of using window.confirm
+        dispatch(setPendingCapture({
+            opponentColour,
+            tokenColour: token.colour
+        }));
         
-        if (!wantsToRollAgain) {
-           // Force a dare on the first captured opponent instead of rolling again
-           const opponentColour = capturedColours[0];
-           // Delay slightly so the capture animation finishes
-           setTimeout(() => {
-             triggerSpecialTile(lastTokenCoord, vibe, opponentColour, dispatch);
-           }, 500);
-           // We return isCaptured: false so handlePostDiceRollThunk doesn't grant an extra roll
-           return { isCaptured: false, hasTokenReachedHome, hasPlayerWon };
-        }
+        // Return isCaptured: false so handlePostDiceRollThunk doesn't automatically grant extra roll
+        // The modal will handle whether they roll again or force a dare
+        return { isCaptured: false, hasTokenReachedHome, hasPlayerWon };
       }
 
       return { isCaptured, hasTokenReachedHome, hasPlayerWon };
     },
-    [captureToken, dispatch, moveToken, vibe]
+    [captureToken, dispatch, moveToken, store, vibe]
   );
 }

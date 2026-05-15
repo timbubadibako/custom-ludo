@@ -43,6 +43,7 @@ function getDiceImage(diceNumber: number | undefined): string {
 
 function Dice({ colour, onDiceClick, playerName }: Props) {
   const dispatch = useDispatch<AppDispatch>();
+  const { activeChallenge } = useSelector((state: RootState) => state.board);
   const {
     isAnyTokenMoving,
     isGameEnded,
@@ -64,7 +65,8 @@ function Dice({ colour, onDiceClick, playerName }: Props) {
     isAnyTokenMoving ||
     isGameEnded ||
     isPlaceholderShowing ||
-    isBot;
+    isBot ||
+    !!activeChallenge;
 
   const handleDiceClick = useCallback(() => {
     if (isDiceDisabled) return;

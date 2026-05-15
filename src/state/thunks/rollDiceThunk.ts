@@ -1,6 +1,7 @@
 import { renewRollBag, setDiceNumber, setIsPlaceholderShowing } from '../slices/diceSlice';
 import type { TPlayerColour } from '../../types';
 import type { AppDispatch, RootState } from '../store';
+import { playSFX, SFX } from '../../utils/audio';
 
 const DICE_PLACEHOLDER_DELAY = 1000;
 
@@ -8,6 +9,7 @@ export function rollDiceThunk(colour: TPlayerColour, onDiceRoll: (diceNumber: nu
   return (dispatch: AppDispatch, getState: () => RootState) => {
     if (getState().players.isGameEnded) return;
     dispatch(setIsPlaceholderShowing({ colour, isPlaceholderShowing: true }));
+    playSFX(SFX.DICE_ROLL);
     setTimeout(() => {
       const diceState = getState().dice;
       const dice = diceState.dice.find((d) => d.colour === colour);

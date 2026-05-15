@@ -1,9 +1,9 @@
 import type { TCoordinate } from '../../types';
-import { type TChallengeType, setActiveChallenge } from '../../state/slices/boardSlice';
+import { type TChallengeType, setActiveChallenge, incrementCompletedChallenges, setLevel, resetChallengesCount } from '../../state/slices/boardSlice';
 import { CHALLENGE_DATA } from './challengeData';
 import type { TVibe } from '../../state/slices/sessionSlice';
 import type { TPlayerColour } from '../../types';
-import type { AppDispatch } from '../../state/store';
+import type { AppDispatch, RootState } from '../../state/store';
 import { areCoordsEqual } from './logic';
 
 export type TSpecialTile = {
@@ -38,32 +38,41 @@ export const SPECIAL_TILES: TSpecialTile[] = [
   { coords: { x: 5, y: 6 }, type: 'dare' },
   { coords: { x: 6, y: 3 }, type: 'dare' },
   { coords: { x: 8, y: 0 }, type: 'dare' },
-
-
-
-
-  
 ];
 
 export function triggerSpecialTile(
   coords: TCoordinate, 
   vibe: TVibe, 
   playerColour: TPlayerColour,
-  dispatch: AppDispatch
+  dispatch: AppDispatch,
+  state: RootState
 ) {
   const specialTile = SPECIAL_TILES.find(t => areCoordsEqual(t.coords, coords));
   if (specialTile) {
-    // If the pool doesn't exist for the specific vibe/type, fallback to Truth
-    const typeToUse = (specialTile.type === 'foreplay') ? 'dare' : specialTile.type;
-    const pool = CHALLENGE_DATA[vibe][typeToUse];
+    const { currentLevel, completedChallengesCount } = state.board;
+    const levelKey = `level${currentLevel}` as keyof typeof CHALLENGE_DATA[TVibe][TChallengeType];
+    const pool = CHALLENGE_DATA[vibe][specialTile.type][levelKey];
     
     if (pool && pool.length > 0) {
         const randomText = pool[Math.floor(Math.random() * pool.length)];
+        
         dispatch(setActiveChallenge({
-          type: typeToUse,
+          type: specialTile.type,
           text: randomText,
-          playerColour
+          playerColour,
+          isManual: false
         }));
+
+        // Logic for leveling up
+        const totalInLevel = pool.length;
+        if (completedChallengesCount >= totalInLevel - 3 && currentLevel < 3) {
+            dispatch(setLevel(currentLevel + 1));
+            dispatch(resetChallengesCount());
+            console.log(`Leveled up to Level ${currentLevel + 1}`);
+        } else {
+            dispatch(incrementCompletedChallenges());
+        }
+
         return true;
     }
   }

@@ -1,155 +1,126 @@
-.how-to-play-container {
-  line-height: 1.6;
-  max-width: 100vw;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-}
-.how-to-play {
-  max-width: 70vw;
-  margin: 0 auto;
-  padding-top: 1.5em;
-  padding-bottom: 1em;
-}
-.how-to-play .introduction {
-  text-align: center;
-}
-.how-to-play .introduction h1 {
-  font-size: 3em;
-}
-h1,
-h2,
-h3 {
-  color: #0f172a;
+.howToPlayContainer {
+    min-height: 100vh;
+    background: #04122e;
+    background-image: 
+        radial-gradient(circle at top left, rgba(255, 77, 128, 0.15), transparent 40%),
+        radial-gradient(circle at bottom right, rgba(255, 209, 102, 0.1), transparent 40%);
+    color: #d9e2ff;
+    font-family: 'Inter', sans-serif;
+    padding: 3rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-h1 {
-  font-size: 2.2em;
-  margin-bottom: 0.5em;
+.header {
+    text-align: center;
+    margin-bottom: 4rem;
 }
 
-h2 {
-  font-size: 1.8em;
-  margin-top: 1em;
-  border-bottom: 2px solid #e2e8f0;
-  padding-bottom: 0.3em;
+.header h1 {
+    font-family: 'Quicksand', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    color: #fafafa;
+    margin: 0;
 }
 
-ul,
-ol {
-  padding-left: 1.5em;
-  margin-top: 0.5em;
-  margin-bottom: 1em;
+.icon {
+    color: #ff4d80;
 }
 
-li {
-  margin-bottom: 0.5em;
+.subtitle {
+    color: #edc157;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
 }
 
-h3 {
-  font-size: 1.3em;
-  margin-top: 1.2em;
-  margin-bottom: 0.3em;
-  font-weight: bold;
+.rulesGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+    width: min(1200px, 100%);
 }
 
-.note {
-  color: #475569;
-  font-size: 0.95em;
+.ruleCard {
+    background: rgba(18, 31, 59, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 1.5rem;
+    padding: 2rem;
+    transition: transform 0.3s ease, border-color 0.3s ease;
 }
 
-.highlight-red {
-  font-weight: bold;
-  color: #be123c;
+.ruleCard:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255, 77, 128, 0.3);
 }
 
-.section {
-  margin-bottom: 2em;
+.cardHeader {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
 }
 
-.section p {
-  margin-top: 0.5em;
+.cardIcon {
+    font-size: 2rem;
 }
 
-.play-now-btn {
-  display: inline-block;
-  bottom: 0;
-  background-color: var(--color-primary);
-  color: white;
-  font-weight: 600;
-  border: none;
-  font-size: 1.8em;
-  padding-inline: 1em;
-  padding-block: 0.5em;
-  border-radius: 0.5em;
-  margin-top: 1em;
-  margin-bottom: 4em;
-  text-decoration: none;
-  transition:
-    background-color 0.2s ease,
-    transform 0.2s ease;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  cursor: pointer;
+.ruleCard h2 {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1.4rem;
+    color: #fafafa;
+    margin: 0;
 }
 
-.play-now-btn:hover,
-.play-now-btn:active,
-.play-now-btn:focus-visible {
-  background-color: var(--color-primary-hover);
-  transform: scale(1.05);
+.ruleCard p {
+    color: #d9e2ff;
+    line-height: 1.6;
+    margin: 0;
+    opacity: 0.8;
 }
 
-.link {
-  color: #4338ca;
-  text-decoration: none;
-  font-weight: bold;
+.actions {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 5rem;
+    width: min(500px, 100%);
 }
 
-.link:hover {
-  color: #3730a3;
-  text-decoration: underline;
+.backLink, .homeLink {
+    flex: 1;
+    text-align: center;
+    padding: 1.2rem;
+    border-radius: 999px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.2s;
 }
 
-kbd {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 0.9em;
-  line-height: 1;
-  padding: 0.15em 0.45em;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 0.35em;
-  background: #f3f5f7;
-  color: #2b333b;
-  border: 1px solid #c4ccd4;
-  font-weight: 600;
-  box-shadow: inset 0 -1px 0 #c4ccd4;
-  white-space: nowrap;
+.backLink {
+    background: #ff4d80;
+    color: #fff;
+    box-shadow: 0 10px 25px rgba(255, 77, 128, 0.3);
 }
 
-@media only screen and (max-width: 830px) {
-  .how-to-play-container {
-    font-size: 0.75rem;
-  }
+.homeLink {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
 }
 
-@media only screen and (max-width: 655px) {
-  .how-to-play-container {
-    font-size: 0.68rem;
-  }
-  .how-to-play {
-    max-width: 90vw;
-  }
+.backLink:hover {
+    transform: translateY(-3px);
+    filter: brightness(1.1);
 }
 
-@media only screen and (max-width: 435px) {
-  .how-to-play-container {
-    font-size: 0.58rem;
-  }
+.homeLink:hover {
+    background: rgba(255, 255, 255, 0.1);
 }
 
-@media only screen and (max-width: 375px) {
-  .how-to-play-container {
-    font-size: 0.5rem;
-  }
+@media (max-width: 600px) {
+    .rulesGrid { grid-template-columns: 1fr; }
+    .actions { flex-direction: column; gap: 1rem; }
 }
