@@ -8,34 +8,34 @@ const H = ({ c }: { c: string }) => <span className={styles.icon} aria-hidden="t
 
 const rules = [
     {
-        title: "The Goal",
+        title: "Objective",
         icon: "🎯",
-        content: "Be the first to move all 4 of your tokens into your Home Base. The winner claims the agreed Reward."
+        content: "Move all 4 of your tokens into the Home Base. The winner gets the agreed 'Spicy Reward'."
     },
     {
-        title: "Strategic Challenges",
-        icon: "✨",
-        content: "Land on special tiles or pick from decks. Taking a challenge grants fixed moves (3 for Truth, 6 for Dare)."
+        title: "Challenges",
+        icon: "🔥",
+        content: "Landing on Truth or Dare tiles triggers a challenge. Completing a DARE advances your Heat Bar and Level."
     },
     {
-        title: "Capturing",
-        icon: "⚔️",
-        content: "Capture an opponent to send them back. Choose your reward: Roll Again or Force them to draw a Dare card."
+        title: "Heat Meter",
+        icon: "🌡️",
+        content: "Only DARE challenges increase your meter. Higher levels unlock more intense (Naughty) content."
     },
     {
-        title: "The Greedy Rule",
-        icon: "⚠️",
-        content: "Rolling a 6 three times in a row ends your turn immediately and forces a mandatory Truth challenge!"
+        title: "Skip & Penalty",
+        icon: "⚖️",
+        content: "Too scared for a Dare? You can skip, but your partner will give you a custom replacement penalty!"
+    },
+    {
+        title: "Strategic Moves",
+        icon: "🎲",
+        content: "Taking a challenge grants fixed dice: 6 for Dare, 3 for Truth. Use them wisely to reach home faster."
     },
     {
         title: "Safe Zones",
         icon: "⭐",
-        content: "Tokens are completely safe from being captured when they land on a Star Tile."
-    },
-    {
-        title: "Safe Word",
-        icon: "🛑",
-        content: "Use the 'Finish Now' button at any time to pause or end the session instantly with no questions asked."
+        content: "Star tiles are safe zones. You cannot be captured while resting on a Star."
     }
 ];
 
@@ -60,8 +60,8 @@ const itemVariants = {
 function HowToPlay() {
   const cleanup = useCleanup();
   useEffect(() => {
-    document.title = 'Rules | Ludo Foreplay Night';
-    cleanup();
+    document.title = 'Rules | LibreLudo';
+    return () => cleanup();
   }, [cleanup]);
 
   return (
@@ -111,10 +111,10 @@ function HowToPlay() {
         className={styles.actions}
       >
         <Link to="/setup" className={styles.backLink}>
-          Start Playing
+          Start Session
         </Link>
         <Link to="/" className={styles.homeLink}>
-          Back to Home
+          Back to Menu
         </Link>
       </motion.div>
     </div>

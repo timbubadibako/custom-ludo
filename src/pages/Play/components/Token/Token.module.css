@@ -23,8 +23,9 @@
 }
 
 .bouncer.active {
-  animation: bounce 0.7s ease-in-out infinite;
+  animation: bounce 0.7s ease-in-out infinite, pulseGlow 1.5s infinite ease-in-out;
   cursor: pointer;
+  filter: drop-shadow(0 0 12px var(--fill-colour));
 }
 
 .svg {
@@ -32,6 +33,38 @@
   width: 100%;
   height: 100%;
   transform: translate3d(0, 0, 0);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+}
+
+/* Unique Signatures */
+.blue .svg { filter: drop-shadow(0 0 10px #ffd166); }
+.green .svg { filter: drop-shadow(0 0 10px #fec8d8); }
+.red .svg { filter: drop-shadow(0 0 10px #ff4d80); }
+.yellow .svg { filter: drop-shadow(0 0 10px #4d80ff); }
+
+/* Additional differentiation with internal "emblems" using pseudo-elements */
+.token::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40%;
+  height: 40%;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0.5;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.blue::after { background: radial-gradient(circle, #fff, transparent); }
+.green::after { border-radius: 20%; background: rgba(255, 255, 255, 0.2); }
+.red::after { width: 30%; height: 30%; border: 2px solid #fff; }
+.yellow::after { transform: translate(-50%, -50%) rotate(45deg); width: 35%; height: 35%; }
+
+@keyframes pulseGlow {
+  0%, 100% { filter: drop-shadow(0 0 8px var(--fill-colour)); }
+  50% { filter: drop-shadow(0 0 20px var(--fill-colour)) brightness(1.2); }
 }
 
 .token:focus-visible .svg {

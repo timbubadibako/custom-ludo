@@ -2,6 +2,7 @@ import { isRouteErrorResponse, useRouteError } from 'react-router-dom';
 import styles from './ErrorBoundary.module.css';
 import { useEffect } from 'react';
 import { useCleanup } from '../../hooks/useCleanup';
+import { motion } from 'framer-motion';
 
 function ErrorBoundary() {
   const error = useRouteError();
@@ -30,31 +31,36 @@ function ErrorBoundary() {
   };
 
   useEffect(() => {
-    document.title = 'Oops! Something went wrong';
-    cleanup();
+    document.title = 'Oops! Error Occurred';
+    return () => cleanup();
   }, [cleanup]);
+
   return (
     <div className={styles.errorContainer}>
-      <div className={styles.errorDialog}>
+      <motion.div 
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        className={styles.errorDialog}
+      >
         <div>
           <p className={styles.oops}>
-            <span>Oops!</span> Something went wrong
+            <span>Oops!</span> Session Interrupted
           </p>
           <p className={styles.message}>
-            An unexpected error interrupted the game. Tap below to restart
+            An unexpected error occurred. Don't worry, your progress might still be saved.
           </p>
         </div>
         <button
           className={styles.startNewGameBtn}
-          onClick={() => (window.location.href = '/setup')}
+          onClick={() => (window.location.href = '/')}
         >
-          Start New Game
+          Restart Session
         </button>
         <details className={styles.errorDetails}>
-          <summary>Show details</summary>
+          <summary>Show Technical Details</summary>
           <div className={styles.errorContent}>{getError(error)}</div>
         </details>
-      </div>
+      </motion.div>
     </div>
   );
 }

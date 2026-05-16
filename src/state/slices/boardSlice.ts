@@ -13,6 +13,7 @@ export type TActiveChallenge = {
   text: string;
   playerColour: TPlayerColour;
   isManual?: boolean;
+  title?: string;
 } | null;
 
 type TBoardState = {
@@ -24,6 +25,7 @@ type TBoardState = {
   pendingCapture: TPendingCapture;
   currentLevel: number;
   completedChallengesCount: number;
+  usedCards: string[];
 };
 
 export const initialState: TBoardState = {
@@ -35,6 +37,7 @@ export const initialState: TBoardState = {
   pendingCapture: null,
   currentLevel: 1,
   completedChallengesCount: 0,
+  usedCards: [],
 };
 
 export const NUMBER_OF_BLOCKS_IN_ONE_ROW = 15;
@@ -66,6 +69,14 @@ const reducers = {
   resetChallengesCount: (state: TBoardState) => {
     state.completedChallengesCount = 0;
   },
+  markCardAsUsed: (state: TBoardState, action: PayloadAction<string>) => {
+    if (!state.usedCards.includes(action.payload)) {
+      state.usedCards.push(action.payload);
+    }
+  },
+  clearUsedCards: (state: TBoardState) => {
+    state.usedCards = [];
+  },
   clearBoardState: () => initialState,
 };
 
@@ -75,15 +86,17 @@ const boardSlice = createSlice({
   reducers,
 });
 
-export const { 
-    resizeBoard, 
-    setActiveChallenge, 
-    setPendingCapture, 
-    clearActiveChallenge, 
-    incrementCompletedChallenges,
-    setLevel,
-    resetChallengesCount,
-    clearBoardState 
+export const {
+  resizeBoard,
+  setActiveChallenge,
+  setPendingCapture,
+  clearActiveChallenge,
+  incrementCompletedChallenges,
+  setLevel,
+  resetChallengesCount,
+  markCardAsUsed,
+  clearUsedCards,
+  clearBoardState,
 } = boardSlice.actions;
 
 export default boardSlice.reducer;

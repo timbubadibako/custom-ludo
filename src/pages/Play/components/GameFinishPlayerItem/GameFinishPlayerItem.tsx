@@ -42,7 +42,7 @@ function GameFinishPlayerItem({ colour, isLast, name, rank }: Props) {
   const { boardTileSize } = useSelector((state: RootState) => state.board);
   const { players } = useSelector((state: RootState) => state.players);
   const { gameStartTime, gameInactiveTime } = useSelector((state: RootState) => state.session);
-  const { playerFinishTime } = players.find((p) => p.colour === colour) as TPlayer;
+  const { playerFinishTime } = players.find((p: TPlayer) => p.colour === colour) as TPlayer;
 
   return (
     <AnimatePresence>

@@ -164,7 +164,7 @@ function PlayerSetup() {
                 onTokenChange={(token) => {
                   dispatch(updateDraftPlayer({ index, data: { token } }));
                 }}
-                unavailableTokens={selectedTokens.filter((_, i) => i !== index)}
+                unavailableTokens={selectedTokens.filter((_token: string, i: number) => i !== index)}
               />
             ))}
           </div>

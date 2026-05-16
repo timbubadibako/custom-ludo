@@ -1,5 +1,6 @@
 .howToPlayContainer {
     min-height: 100vh;
+    padding-top: 100px; /* Space for Navbar */
     background: #04122e;
     background-image: 
         radial-gradient(circle at top left, rgba(255, 77, 128, 0.15), transparent 40%),

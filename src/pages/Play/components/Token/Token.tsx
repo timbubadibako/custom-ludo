@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { deactivateAllTokens, setIsAnyTokenMoving } from '../../../../state/slices/playersSlice';
-import { type TPlayer, type TPlayerColour, type TTokenClickData } from '../../../../types';
+import { type TPlayer, type TPlayerColour, type TTokenClickData, type TDice } from '../../../../types';
 import { type TToken } from '../../../../types';
 import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from '../../../../state/store';
@@ -12,6 +12,7 @@ import { useMoveAndCaptureToken } from '../../../../hooks/useMoveAndCaptureToken
 import { unlockAndAlignTokens } from '../../../../state/thunks/unlockAndAlignTokens';
 import { playerColours } from '../../../../game/players/constants';
 import { FORWARD_TOKEN_TRANSITION_TIME } from '../../../../game/tokens/constants';
+import { playSFX, SFX } from '../../../../utils/audio';
 import styles from './Token.module.css';
 import clsx from 'clsx';
 import { getTokenDOMId } from '../../../../game/tokens/logic';
@@ -29,29 +30,38 @@ function Token({ colour, id, tokenClickData }: Props) {
   const tokenClickDataRef = useRef(tokenClickData);
   const [isCurrentlyFocused, setIsCurrentlyFocused] = useState(false);
   const tokenElRef = useRef<HTMLButtonElement | null>(null);
-  const { numberOfConsecutiveSix, tokens: playerTokens } = useMemo(
-    () => players.find((v) => v.colour === colour),
+  const { tokens: playerTokens } = useMemo(
+    () => players.find((v: TPlayer) => v.colour === colour),
     [players, colour]
   ) as TPlayer;
-  const token = useMemo(() => playerTokens.find((t) => t.id === id), [playerTokens, id]) as TToken;
+  const token = useMemo(() => playerTokens.find((t: TToken) => t.id === id), [playerTokens, id]) as TToken;
 
   const { coordinates, isActive, isLocked, tokenAlignmentData } = token;
 
   const { scaleFactor } = tokenAlignmentData;
   const getPosition = useCoordsToPosition();
   const { x, y } = getPosition(coordinates, tokenAlignmentData);
-  const diceNumber = useSelector((state: RootState) =>
-    state.dice.dice.find((d) => d.colour === colour)
-  )?.diceNumber;
+  const dice = useSelector((state: RootState) =>
+    state.dice.dice.find((d: TDice) => d.colour === colour)
+  );
+  const diceNumber = dice?.diceNumber;
+  const isRewardRoll = dice?.lastRollIsReward;
   const moveAndCapture = useMoveAndCaptureToken();
 
   const unlock = () => {
     dispatch(setIsAnyTokenMoving(true));
+    playSFX(SFX.TOKEN_UNLOCK);
     setTokenTransitionTime(FORWARD_TOKEN_TRANSITION_TIME, token);
     dispatch(unlockAndAlignTokens({ colour, id }));
     dispatch(deactivateAllTokens(colour));
+
     setTimeout(() => {
       dispatch(setIsAnyTokenMoving(false));
+      
+      // If it's a reward roll, we MUST end the turn after unlocking
+      if (isRewardRoll) {
+        dispatch(changeTurnThunk(moveAndCapture));
+      }
     }, FORWARD_TOKEN_TRANSITION_TIME);
   };
 
@@ -60,12 +70,16 @@ function Token({ colour, id, tokenClickData }: Props) {
 
     const moveData = await moveAndCapture(token, diceNumber);
     if (!moveData) return;
+
     const { hasTokenReachedHome, isCaptured, hasPlayerWon } = moveData;
     if (hasPlayerWon) return dispatch(changeTurnThunk(moveAndCapture));
-    if ((diceNumber !== 6 || numberOfConsecutiveSix >= 3) && !isCaptured && !hasTokenReachedHome) {
+    
+    const canRollAgain = diceNumber === 6 && !isRewardRoll;
+
+    if (!canRollAgain && !isCaptured && !hasTokenReachedHome) {
       return dispatch(changeTurnThunk(moveAndCapture));
     }
-  }, [diceNumber, dispatch, isActive, moveAndCapture, numberOfConsecutiveSix, token]);
+  }, [diceNumber, dispatch, isRewardRoll, isActive, moveAndCapture, token]);
 
   useEffect(() => {
     const prevClickData = tokenClickDataRef.current;
@@ -87,7 +101,7 @@ function Token({ colour, id, tokenClickData }: Props) {
   return (
     <button
       id={getTokenDOMId(colour, id)}
-      className={styles.token}
+      className={clsx(styles.token, styles[colour])}
       tabIndex={isActive ? undefined : -1}
       onFocus={() => setIsCurrentlyFocused(true)}
       onBlur={() => setIsCurrentlyFocused(false)}

@@ -1,8 +1,9 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, Outlet } from 'react-router-dom';
 import LoadingScreen from './components/LoadingScreen/LoadingScreen.tsx';
 import HomePage from './pages/HomePage/HomePage.tsx';
 import NotFound from './pages/NotFound/NotFound.tsx';
 import ErrorBoundary from './pages/ErrorBoundary/ErrorBoundary.tsx';
+import Navbar from './components/Navbar/Navbar.tsx';
 import { lazy, Suspense, type LazyExoticComponent, type ReactElement } from 'react';
 
 const Play = lazy(() => import('./pages/Play/Play.tsx'));
@@ -18,6 +19,12 @@ const wrapWithSuspense = (Component: LazyExoticComponent<() => ReactElement>) =>
 export const router = createBrowserRouter([
   {
     path: '/',
+    element: (
+        <>
+            <Navbar />
+            <Outlet />
+        </>
+    ),
     ErrorBoundary,
     children: [
       {

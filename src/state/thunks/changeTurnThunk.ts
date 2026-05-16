@@ -7,6 +7,7 @@ import { changeTurn, deactivateAllTokens } from '../slices/playersSlice';
 import { handlePostDiceRollThunk } from './handlePostDiceRollThunk';
 import { rollDiceThunk } from './rollDiceThunk';
 import { unlockAndAlignTokens } from './unlockAndAlignTokens';
+import { type TPlayer } from '../../types';
 
 export function changeTurnThunk(moveAndCapture: ReturnType<typeof useMoveAndCaptureToken>) {
   return (dispatch: AppDispatch, getState: () => RootState) => {
@@ -20,17 +21,18 @@ export function changeTurnThunk(moveAndCapture: ReturnType<typeof useMoveAndCapt
     if (!isBot || !colour) return;
 
     const handleDiceRoll = async (diceNumber: number) => {
-      const { shouldContinue, moveData: autoMoveData } =
+      const { shouldContinue, moveData: autoMoveData, isRewardRoll } =
         (await dispatch(handlePostDiceRollThunk(colour, diceNumber, moveAndCapture))) ?? {};
       dispatch(deactivateAllTokens(colour));
 
       const { players } = getState().players;
 
-      const allTokens = players.flatMap((p) => p.tokens);
+      const allTokens = players.flatMap((p: TPlayer) => p.tokens);
       if (!shouldContinue) return;
       if (autoMoveData) {
         const { hasTokenReachedHome, isCaptured } = autoMoveData;
-        if (!isCaptured && !hasTokenReachedHome && diceNumber !== 6) {
+        const canRollAgain = diceNumber === 6 && !isRewardRoll;
+        if (!isCaptured && !hasTokenReachedHome && !canRollAgain) {
           return setTimeout(() => dispatch(changeTurnThunk(moveAndCapture)), 1000);
         } else {
           return setTimeout(() => dispatch(rollDiceThunk(colour, handleDiceRoll)), 1000);
@@ -44,13 +46,20 @@ export function changeTurnThunk(moveAndCapture: ReturnType<typeof useMoveAndCapt
 
       if (bestToken.isLocked && !bestToken.hasTokenReachedHome && diceNumber === 6) {
         dispatch(unlockAndAlignTokens({ colour, id: bestToken.id }));
-        return setTimeout(() => dispatch(rollDiceThunk(colour, handleDiceRoll)), 1000);
+        const canRollAgain = !isRewardRoll;
+        if (canRollAgain) {
+            return setTimeout(() => dispatch(rollDiceThunk(colour, handleDiceRoll)), 1000);
+        } else {
+            return setTimeout(() => dispatch(changeTurnThunk(moveAndCapture)), 1000);
+        }
       }
       const moveData = await moveAndCapture(bestToken, diceNumber);
       if (!moveData) return dispatch(changeTurnThunk(moveAndCapture));
       const { hasTokenReachedHome, isCaptured, hasPlayerWon } = moveData;
       if (hasPlayerWon) return setTimeout(() => dispatch(changeTurnThunk(moveAndCapture)), 1000);
-      if (!isCaptured && !hasTokenReachedHome && diceNumber !== 6) {
+      
+      const canRollAgain = diceNumber === 6 && !isRewardRoll;
+      if (!isCaptured && !hasTokenReachedHome && !canRollAgain) {
         return setTimeout(() => dispatch(changeTurnThunk(moveAndCapture)), 1000);
       } else {
         return setTimeout(() => dispatch(rollDiceThunk(colour, handleDiceRoll)), 1000);

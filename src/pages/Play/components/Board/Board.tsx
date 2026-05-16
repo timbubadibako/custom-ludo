@@ -6,7 +6,7 @@ import type { RootState } from '../../../../state/store';
 import { useCallback, useState } from 'react';
 import { NUMBER_OF_BLOCKS_IN_ONE_ROW, resizeBoard } from '../../../../state/slices/boardSlice';
 import { ERRORS } from '../../../../utils/errors';
-import type { TCoordinate } from '../../../../types';
+import type { TCoordinate, TPlayer, TToken } from '../../../../types';
 import { getTokenDOMId, tokensWithCoord } from '../../../../game/tokens/logic';
 import type { TTokenClickData } from '../../../../types/tokens';
 import styles from './Board.module.css';
@@ -30,7 +30,9 @@ function Board() {
   useResizeObserver(boardNode, onBoardResize);
 
   const handleBoardClick: React.MouseEventHandler<HTMLDivElement> = (e) => {
-    if (players.find((p) => p.colour === currentPlayerColour)?.isBot) return;
+    const currentPlayer = players.find((p: TPlayer) => p.colour === currentPlayerColour);
+    if (currentPlayer?.isBot) return;
+
     if (!boardNode) throw new Error(ERRORS.boardDoesNotExist());
     const { top, left } = boardNode.getBoundingClientRect();
     const boardX = e.clientX - left;
@@ -59,39 +61,14 @@ function Board() {
     });
   };
 
-  const getTileEmoji = (type: string) => {
-    switch(type) {
-      case 'truth': return '🔮';
-      case 'dare': return '🎭';
-      case 'foreplay': return '❤️‍🔥';
-      default: return '';
-    }
-  };
-
   const is2PlayerMode = players.length === 2;
 
   return (
     <div className={styles.boardWrapper}>
       <div className={styles.board} ref={setBoardNode} onClick={handleBoardClick}>
 
-        {/* Render Special Tiles Overlays */}
-        {SPECIAL_TILES.map((tile, i) => (
-          <div 
-            key={i}
-            className={clsx(styles.specialTileMarker, styles[`marker_${tile.type}`])}
-            style={{
-              left: tile.coords.x * boardTileSize,
-              top: tile.coords.y * boardTileSize,
-              width: boardTileSize,
-              height: boardTileSize,
-            }}
-          >
-            <span className={styles.markerEmoji}>{getTileEmoji(tile.type)}</span>
-          </div>
-        ))}
-
-        {players.map((p) =>
-          p.tokens.map((t) => (
+        {players.map((p: TPlayer) =>
+          p.tokens.map((t: TToken) => (
             <Token
               colour={t.colour}
               id={t.id}
@@ -106,6 +83,34 @@ function Board() {
         ) : (
           <BoardImage className={styles.boardImage} aria-hidden="true" />
         )}
+
+        {/* Render Special Tiles Overlays using direct SVG for maximum reliability */}
+        {SPECIAL_TILES.map((tile, i) => {
+          const color = tile.type === 'truth' ? '#ff4d80' : '#ffd166';
+          return (
+            <div 
+              key={`special-${i}`}
+              className={clsx(styles.specialTileMarker, styles[`marker_${tile.type}`])}
+              style={{
+                left: tile.coords.x * boardTileSize,
+                top: tile.coords.y * boardTileSize,
+                width: boardTileSize,
+                height: boardTileSize,
+                zIndex: 60,
+                '--glow-color': color,
+              } as React.CSSProperties}
+            >
+              <svg viewBox="0 0 100 100" style={{ width: '50%', height: '50%', filter: `drop-shadow(0 0 8px ${color})` }}>
+                <rect x="5" y="5" width="90" height="90" rx="15" stroke={color} strokeWidth="8" fill="rgba(0,0,0,0.5)" />
+                {tile.type === 'truth' ? (
+                  <circle cx="50" cy="50" r="18" fill={color} />
+                ) : (
+                  <path d="M50 25V75M25 50H75" stroke={color} strokeWidth="12" strokeLinecap="round" />
+                )}
+              </svg>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

@@ -63,7 +63,13 @@ const reducers = {
       tokens: genLockedTokens(action.payload.colour),
       numberOfConsecutiveSix: 0,
       playerFinishTime: -1,
+      completedChallengesCount: 0,
     });
+  },
+
+  incrementPlayerChallenges: (state: TPlayerState, action: PayloadAction<TPlayerColour>) => {
+    const player = getPlayer(state, action.payload);
+    player.completedChallengesCount += 1;
   },
 
   changeCoordsOfToken: (
@@ -80,21 +86,27 @@ const reducers = {
   },
 
   changeTurn: (state: TPlayerState) => {
-    const { currentPlayerColour, playerSequence } = state;
-    if (currentPlayerColour) {
-      const prevPlayer = state.players.find((p) => p.colour === currentPlayerColour);
-      if (prevPlayer) prevPlayer.tokens.forEach((t) => (t.isActive = false));
-    }
-    
-    if (!currentPlayerColour) {
-      state.currentPlayerColour = 'blue';
+    if (!state.currentPlayerColour || state.playerSequence.length === 0) {
+      state.currentPlayerColour = state.players[0]?.colour || 'blue';
       return;
     }
-    const currentPlayerIndex = playerSequence.indexOf(currentPlayerColour);
-    const nextPlayerIndex =
-      currentPlayerIndex === playerSequence.length - 1 ? 0 : currentPlayerIndex + 1;
 
-    state.currentPlayerColour = playerSequence[nextPlayerIndex];
+    // 1. Deactivate tokens of the player who just finished their turn
+    const currentPlayer = state.players.find((p) => p.colour === state.currentPlayerColour);
+    if (currentPlayer) {
+        currentPlayer.tokens.forEach((t) => (t.isActive = false));
+    }
+
+    // 2. Calculate next player
+    const currentIndex = state.playerSequence.indexOf(state.currentPlayerColour);
+    
+    // If current player not found in sequence (error state), default to first
+    if (currentIndex === -1) {
+        state.currentPlayerColour = state.playerSequence[0];
+    } else {
+        const nextIndex = (currentIndex + 1) % state.playerSequence.length;
+        state.currentPlayerColour = state.playerSequence[nextIndex];
+    }
   },
 
   setPlayerSequence: (
@@ -102,6 +114,10 @@ const reducers = {
     action: PayloadAction<{ playerCount: TPlayerCount }>
   ) => {
     state.playerSequence = playerSequences[action.payload.playerCount];
+    // Automatically set the first player as current to allow early moves/card clicks
+    if (state.playerSequence.length > 0) {
+        state.currentPlayerColour = state.playerSequence[0];
+    }
   },
 
   activateTokens: (
@@ -209,6 +225,7 @@ export const {
   setIsAnyTokenMoving,
   markTokenAsReachedHome,
   setTokenAlignmentData,
+  incrementPlayerChallenges,
   clearPlayersState,
 } = playersSlice.actions;
 

@@ -1,7 +1,6 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { TPlayerColour } from '../../types';
+import type { TDice, TPlayerColour } from '../../types';
 import { ERRORS } from '../../utils/errors';
-import type { TDice } from '../../types';
 
 export type TDiceState = {
   dice: TDice[];
@@ -32,6 +31,7 @@ const reducers = {
       colour: action.payload,
       diceNumber: 1,
       isPlaceholderShowing: false,
+      lastRollIsReward: false,
     });
     state.rollBag[action.payload] = generateRollBag();
   },
@@ -48,19 +48,26 @@ const reducers = {
   ) => {
     const dice = getDice(state, action.payload.colour);
     dice.diceNumber = state.rollBag[action.payload.colour][action.payload.randomIndex];
+    dice.lastRollIsReward = false;
     state.rollBag[action.payload.colour] = state.rollBag[action.payload.colour].filter(
       (_, i) => i !== action.payload.randomIndex
     );
   },
   forceDiceNumber: (
     state: TDiceState,
-    action: PayloadAction<{ colour: TPlayerColour; number: number }>
+    action: PayloadAction<{ colour: TPlayerColour; number: number; isReward?: boolean }>
   ) => {
     const dice = getDice(state, action.payload.colour);
     dice.diceNumber = action.payload.number;
+    dice.lastRollIsReward = !!action.payload.isReward;
   },
   renewRollBag: (state: TDiceState, action: PayloadAction<TPlayerColour>) => {
     state.rollBag[action.payload] = generateRollBag();
+  },
+  resetDice: (state: TDiceState, action: PayloadAction<TPlayerColour>) => {
+    const dice = getDice(state, action.payload);
+    dice.diceNumber = 1;
+    dice.lastRollIsReward = false;
   },
   clearDiceState: () => initialState,
 };
@@ -77,6 +84,7 @@ export const {
   forceDiceNumber,
   setIsPlaceholderShowing,
   renewRollBag,
+  resetDice,
   clearDiceState,
 } = diceSlice.actions;
 

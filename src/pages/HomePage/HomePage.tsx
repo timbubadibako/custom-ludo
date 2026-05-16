@@ -42,19 +42,39 @@ function HomePage() {
   
   const [showConsent, setShowConsent] = useState(false);
   const [hasAgreed, setHasAgreed] = useState(false);
+  const [hasSavedGame, setHasSavedGame] = useState(false);
 
   useEffect(() => {
     document.title = 'Ludo Foreplay Night | 18+ Interactive Game';
-    cleanup();
-  }, [cleanup]);
+    
+    // Check for saved game
+    const saved = localStorage.getItem('libreludo_save_v1');
+    if (saved) {
+        try {
+            const parsed = JSON.parse(saved);
+            if (parsed.players?.players?.length > 0) {
+                // Use a non-cascading way or ensure this only runs once
+                setHasSavedGame(true);
+            }
+        } catch { /* ignore */ }
+    }
+
+    return () => cleanup();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Only run once on mount
 
   const handlePlayClick = (e: React.MouseEvent) => {
     e.preventDefault();
     setShowConsent(true);
   };
 
+  const handleContinueClick = () => {
+    navigate('/play', { state: { initData: [] } }); 
+  };
+
   const confirmAndPlay = () => {
     if (hasAgreed) {
+      localStorage.removeItem('libreludo_save_v1'); // Start fresh
       navigate('/setup');
     }
   };
@@ -80,8 +100,13 @@ function HomePage() {
 
             <nav className={styles.ctaButtons} aria-label="Primary actions">
               <button className={clsx(styles.ctaButton, styles.playNowBtn)} onClick={handlePlayClick}>
-                Start / Play Now
+                New Game
               </button>
+              {hasSavedGame && (
+                <button className={clsx(styles.ctaButton, styles.continueBtn)} onClick={handleContinueClick}>
+                  Continue Match
+                </button>
+              )}
               <Link className={clsx(styles.ctaButton, styles.howToPlayBtn)} to="/how-to-play">
                 How to Play
               </Link>
@@ -131,7 +156,7 @@ function HomePage() {
             </div>
 
             <div className={styles.playerGrid}>
-              {draftPlayers.map((player, index) => (
+              {draftPlayers.map((player: { name: string; token: string }, index: number) => (
                 <div key={index} className={styles.playerCard}>
                   <label htmlFor={`player${index}`}>Player {index + 1}</label>
                   <input 
@@ -209,14 +234,14 @@ function HomePage() {
         <div className={styles.modalOverlay}>
           <div className={styles.modalContent}>
             <h2>Safety & Consent</h2>
-            <p>
-              By proceeding, you confirm that:
+            <div className={styles.consentBody}>
+              <p>By proceeding, you confirm that:</p>
               <ul>
                 <li>Both players are 18 years of age or older.</li>
                 <li>Both players consent to the selected game mode and its challenges.</li>
                 <li>The game can be stopped at any time if either player feels uncomfortable.</li>
               </ul>
-            </p>
+            </div>
             <label className={styles.consentCheckbox}>
               <input 
                 type="checkbox" 

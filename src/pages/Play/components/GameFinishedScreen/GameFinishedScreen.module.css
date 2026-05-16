@@ -1,4 +1,4 @@
-.game-finished-screen {
+.gameFinishedScreen {
   position: absolute;
   height: 100vh;
   width: 100vw;
@@ -6,86 +6,167 @@
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  z-index: 2000;
 }
 
-.game-finished-backdrop {
+.gameFinishedBackdrop {
   position: absolute;
   height: 100vh;
   width: 100vw;
-  background: radial-gradient(circle at center, rgba(255, 77, 128, 0.18), rgba(4, 18, 46, 0.88));
+  background: radial-gradient(circle at center, rgba(255, 77, 128, 0.25), rgba(4, 18, 46, 0.95));
   z-index: 15;
-  overflow: hidden;
 }
 
-.game-finished-dialog {
+.gameFinishedDialog {
   position: relative;
-  width: min(92vw, 42rem);
-  max-height: 88vh;
-  overflow: auto;
-  background: rgba(29, 41, 70, 0.92);
+  width: min(92vw, 38rem);
+  max-height: 90vh;
+  overflow-y: auto;
+  background: rgba(18, 31, 59, 0.9);
+  backdrop-filter: blur(20px);
   z-index: 25;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 2.5rem;
   display: flex;
   align-items: center;
   flex-direction: column;
-  gap: 0.9rem;
-  padding: 1.5rem;
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
-}
-
-.game-finished-kicker {
-  margin: 0;
-  color: #fec8d8;
-  text-transform: uppercase;
-  letter-spacing: 0.3em;
-  font-size: 0.72rem;
-}
-
-.game-finished-text {
-  color: #fafafa;
-  font-size: clamp(2rem, 5vw, 3.4rem);
-  font-weight: 700;
-  letter-spacing: 0.08em;
-}
-
-.game-result {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  width: 100%;
-  gap: 0.7rem;
-}
-
-.play-again-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #ff4d80, #b90e4f);
-  color: white;
-  border: none;
-  font-size: 1rem;
-  padding: 0.95rem 1.35rem;
-  margin-top: 0.5rem;
-  border-radius: 999px;
-  text-decoration: none;
-  transition:
-    background-color 0.2s ease,
-    transform 0.2s ease;
-  cursor: pointer;
-  box-shadow: 0 20px 40px rgba(255, 77, 128, 0.28);
-}
-
-.play-again-btn:hover,
-.play-again-btn:focus-visible {
-  transform: translateY(-2px);
-}
-
-.game-finished-note {
-  margin: 0;
-  color: #e1bec3;
+  padding: 2.5rem;
+  box-shadow: 0 40px 120px rgba(0, 0, 0, 0.6);
   text-align: center;
-  line-height: 1.6;
-  font-size: 0.92rem;
+}
+
+.gameFinishedKicker {
+  margin: 0;
+  color: #ffd166;
+  text-transform: uppercase;
+  letter-spacing: 0.4em;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.gameFinishedText {
+  color: #fff;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 900;
+  margin: 0.5rem 0 1.5rem;
+  font-family: 'Montserrat', sans-serif;
+  background: linear-gradient(to right, #fff, #ffb2bf);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.rewardSection {
+  width: 100%;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 1.5rem;
+  border: 1px solid rgba(255, 209, 102, 0.2);
+}
+
+.rewardLabel {
+  font-size: 0.85rem;
+  color: #ffb2bf;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 1rem;
+}
+
+.rewardCard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.rewardIcon {
+  font-size: 2.5rem;
+  filter: drop-shadow(0 0 10px rgba(255, 209, 102, 0.5));
+}
+
+.rewardText {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #ffd166;
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.congratsText {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.5;
+}
+
+.gameResult {
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.statsLabel {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.3);
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  max-width: 280px;
+  margin-bottom: 2rem;
+}
+
+.playAgainBtn, .homeBtn {
+  padding: 1rem 2rem;
+  border-radius: 99px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-size: 1rem;
+}
+
+.playAgainBtn {
+  background: #ff4d80;
+  color: #fff;
+  box-shadow: 0 10px 25px rgba(255, 77, 128, 0.3);
+}
+
+.playAgainBtn:hover {
+  background: #ff6695;
+  transform: translateY(-2px);
+  box-shadow: 0 15px 35px rgba(255, 77, 128, 0.4);
+}
+
+.homeBtn {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.homeBtn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.gameFinishedNote {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.4);
+  font-style: italic;
+  line-height: 1.4;
+}
+
+@media (max-width: 600px) {
+  .gameFinishedDialog {
+    padding: 1.5rem;
+    border-radius: 1.5rem;
+  }
+  .rewardText {
+    font-size: 1.2rem;
+  }
+  .rewardIcon {
+    font-size: 1.8rem;
+  }
 }

@@ -1,5 +1,6 @@
 .pageContainer {
     min-height: 100vh;
+    padding-top: 70px; /* Space for Navbar */
     display: flex;
     flex-direction: column;
     background: #04122e; /* Deep Blue from design.md */
@@ -97,10 +98,20 @@
     cursor: pointer;
 }
 
-.playNowBtn {
-    background: #ff4d80; /* Jazz Magenta */
-    color: #fff;
-    box-shadow: 0 10px 30px rgba(255, 77, 128, 0.3);
+.playNowBtn:hover {
+    background: #ffd166;
+    color: #04122e;
+}
+
+.continueBtn {
+    background: #ffd166;
+    color: #04122e;
+    box-shadow: 0 10px 30px rgba(255, 209, 102, 0.3);
+}
+
+.continueBtn:hover {
+    background: #ffb2bf;
+    transform: translateY(-2px);
 }
 
 .howToPlayBtn {

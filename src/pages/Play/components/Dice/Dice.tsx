@@ -6,7 +6,7 @@ import dice5 from '../../../../assets/dice/5.svg';
 import dice6 from '../../../../assets/dice/6.svg';
 import dicePlaceholder from '../../../../assets/dice/dice_placeholder.gif';
 import { useCallback, useEffect, useMemo } from 'react';
-import { type TPlayerColour } from '../../../../types';
+import { type TPlayerColour, type TPlayer, type TDice } from '../../../../types';
 import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from '../../../../state/store';
 import { ERRORS } from '../../../../utils/errors';
@@ -51,13 +51,13 @@ function Dice({ colour, onDiceClick, playerName }: Props) {
     players,
   } = useSelector((state: RootState) => state.players);
   const { diceNumber, isPlaceholderShowing } =
-    useSelector((state: RootState) => state.dice.dice.find((d) => d.colour === colour)) ?? {};
+    useSelector((state: RootState) => state.dice.dice.find((d: TDice) => d.colour === colour)) ?? {};
 
   const anyTokenActive = useMemo(
     () => isAnyTokenActiveOfColour(colour, players),
     [colour, players]
   );
-  const isBot = players.find((p) => p.colour === colour)?.isBot;
+  const isBot = players.find((p: TPlayer) => p.colour === colour)?.isBot;
   const isCurrentPlayer = currentPlayer === colour;
   const isDiceDisabled =
     !isCurrentPlayer ||

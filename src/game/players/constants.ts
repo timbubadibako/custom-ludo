@@ -1,10 +1,10 @@
 import type { TPlayerColour, TPlayerCount } from '../../types';
 
 export const playerColours = {
-  blue: '#24262b',   /* Dark Slate */
-  red: '#3b2226',    /* Dark Burgundy */
-  green: '#3a3324',  /* Dark Olive/Gold */
-  yellow: '#2b271d', /* Dark Mud/Gold */
+  blue: '#ffd166',   /* Gold Glow (Matching Dare) */
+  red: '#ff4d80',    /* Magenta Glow (Matching Truth) */
+  green: '#fec8d8',  /* Soft Pink Glow */
+  yellow: '#4d80ff', /* Neon Blue Glow */
 };
 
 export const MAX_PLAYER_NAME_LENGTH = 15;

@@ -2,24 +2,30 @@ import { Link } from 'react-router-dom';
 import styles from './NotFound.module.css';
 import { useEffect } from 'react';
 import { useCleanup } from '../../hooks/useCleanup';
+import { motion } from 'framer-motion';
 
 function NotFound() {
   const cleanup = useCleanup();
 
   useEffect(() => {
-    document.title = '404 Not Found';
-    cleanup();
+    document.title = '404 Not Found | LibreLudo';
+    return () => cleanup();
   }, [cleanup]);
+
   return (
     <div className={styles.notFoundContainer}>
-      <div className={styles.notFoundDialog}>
+      <motion.div 
+        initial={{ scale: 0.8, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        className={styles.notFoundDialog}
+      >
         <h1>404</h1>
-        <p className={styles.oops}>🎲 Oops! You've rolled the wrong number.</p>
-        <p className={styles.message}>The page you're looking for doesn't exist.</p>
+        <p className={styles.oops}>🎲 Wrong Roll!</p>
+        <p className={styles.message}>This path leads nowhere. Let's get back to the session.</p>
         <Link className={styles.goToHomeBtn} to="/">
           Go to Home
         </Link>
-      </div>
+      </motion.div>
     </div>
   );
 }

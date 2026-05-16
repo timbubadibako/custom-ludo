@@ -4,7 +4,7 @@ import {
   markTokenAsReachedHome,
   setIsAnyTokenMoving,
 } from '../state/slices/playersSlice';
-import { type TToken } from '../types';
+import { type TToken, type TPlayer } from '../types';
 import { ERRORS } from '../utils/errors';
 import type { AppDispatch, RootState } from '../state/store';
 import { areCoordsEqual } from '../game/coords/logic';
@@ -16,6 +16,7 @@ import { tokenPaths } from '../game/tokens/paths';
 import { getTokenDOMId } from '../game/tokens/logic';
 import type { TMoveTokenCompletionData } from '../types/tokens';
 import { playSFX, SFX } from '../utils/audio';
+import { TOKEN_SAFE_COORDINATES } from '../game/tokens/constants';
 
 export const useMoveTokenForward = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -42,11 +43,19 @@ export const useMoveTokenForward = () => {
         const handleTransitionEnd = () => {
           const hasTokenReachedHome = areCoordsEqual(tokenPath[i], tokenPath[tokenPath.length - 1]);
           if (count >= diceNumber || hasTokenReachedHome) {
-            const player = players.find((p) => p.colour === colour);
+            const player = players.find((p: TPlayer) => p.colour === colour);
             if (!player) return;
+
+            // Audio Logic
+            if (hasTokenReachedHome) {
+                playSFX(SFX.HOME_SCORE);
+            } else if (TOKEN_SAFE_COORDINATES.find(c => areCoordsEqual(c, tokenPath[i]))) {
+                playSFX(SFX.STAR_SAFE);
+            }
+
             const hasPlayerWon =
               hasTokenReachedHome &&
-              player.tokens.filter((t) => t.hasTokenReachedHome).length === 3;
+              player.tokens.filter((t: TToken) => t.hasTokenReachedHome).length === 3;
             if (hasTokenReachedHome) dispatch(markTokenAsReachedHome({ colour, id }));
             tokenEl.removeEventListener('transitionend', handleTransitionEnd);
             dispatch(setIsAnyTokenMoving(false));

@@ -14,6 +14,7 @@ export type TPlayer = {
   numberOfConsecutiveSix: number;
   playerFinishTime: number;
   tokens: TToken[];
+  completedChallengesCount: number;
 };
 
 export type TCoordinate = {
