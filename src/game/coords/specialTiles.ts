@@ -7,7 +7,7 @@ import {
     markCardAsUsed,
     clearUsedCards
 } from '../../state/slices/boardSlice';
-import { CHALLENGE_DATA } from './challengeData';
+import { CHALLENGE_DATA, type TChallengeItem } from './challengeData';
 import type { TVibe } from '../../state/slices/sessionSlice';
 import type { TPlayerColour } from '../../types';
 import type { AppDispatch, RootState } from '../../state/store';
@@ -62,13 +62,15 @@ export function triggerSpecialTile(
     const { currentLevel, usedCards } = state.board;
     const levelKey = `level${currentLevel}` as 'level1' | 'level2' | 'level3';
     
-    // Proper typing to avoid 'any'
-    const typedChallengeData = CHALLENGE_DATA as Record<TVibe, Record<TChallengeType, { level1: string[]; level2: string[]; level3: string[] }>>;
+    const typedChallengeData = CHALLENGE_DATA as Record<TVibe, Record<TChallengeType, { level1: TChallengeItem[]; level2: TChallengeItem[]; level3: TChallengeItem[] }>>;
     const pool = typedChallengeData[vibe][specialTile.type][levelKey];
     
     if (pool && pool.length > 0) {
         // Filter out used cards
-        let availableCards = pool.filter((text: string) => !usedCards.includes(text));
+        let availableCards = pool.filter((item: TChallengeItem) => {
+            const text = typeof item === 'string' ? item : item.text;
+            return !usedCards.includes(text);
+        });
         
         // If all cards in this level/type are used, clear history for this type and reuse
         if (availableCards.length === 0) {
@@ -76,11 +78,16 @@ export function triggerSpecialTile(
             availableCards = pool;
         }
 
-        const randomText = availableCards[Math.floor(Math.random() * availableCards.length)];
+        const randomItem = availableCards[Math.floor(Math.random() * availableCards.length)];
+        const randomText = typeof randomItem === 'string' ? randomItem : randomItem.text;
+        const randomIcon = typeof randomItem === 'string' ? undefined : randomItem.icon;
+        const randomIconSize = typeof randomItem === 'string' ? undefined : randomItem.iconSize;
         
         dispatch(setActiveChallenge({
           type: specialTile.type,
           text: randomText,
+          icon: randomIcon,
+          iconSize: randomIconSize,
           playerColour,
           isManual: false
         }));
@@ -92,7 +99,10 @@ export function triggerSpecialTile(
             dispatch(incrementPlayerChallenges(playerColour));
 
             const darePool = typedChallengeData[vibe]['dare'][levelKey];
-            const usedDareCount = darePool.filter((text: string) => usedCards.includes(text)).length + 1;
+            const usedDareCount = darePool.filter((item: TChallengeItem) => {
+                const text = typeof item === 'string' ? item : item.text;
+                return usedCards.includes(text);
+            }).length + 1;
 
             if (usedDareCount >= darePool.length - 3 && currentLevel < 3) {
                 dispatch(setLevel(currentLevel + 1));

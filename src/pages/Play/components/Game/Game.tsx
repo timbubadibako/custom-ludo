@@ -162,7 +162,6 @@ function Game({ initData }: Props) {
     dispatch(forceDiceNumber({ colour: p1.colour, number: 6 }));
     
     // This is for dev testing only - bypasses rules to force a win screen
-    // We'll just finish the game state
     import('../../../../state/slices/playersSlice').then(m => {
         p1.tokens.forEach(t => {
             dispatch(m.markTokenAsReachedHome({ colour: p1.colour, id: t.id }));
@@ -212,22 +211,31 @@ function Game({ initData }: Props) {
     const levelKey = `level${currentLevel}` as 'level1' | 'level2' | 'level3';
 
     import('../../../../game/coords/challengeData').then(({ CHALLENGE_DATA }) => {
-      const typedChallengeData = CHALLENGE_DATA as Record<TVibe, Record<TChallengeType, { level1: string[]; level2: string[]; level3: string[] }>>;
+      const typedChallengeData = CHALLENGE_DATA as Record<TVibe, Record<TChallengeType, { level1: any[]; level2: any[]; level3: any[] }>>;
       const pool = typedChallengeData[vibe as TVibe][pendingManualChallenge as TChallengeType][levelKey];
       
       // Filter out used cards
-      let availableCards = pool.filter((text: string) => !usedCards.includes(text));
+      let availableCards = pool.filter((item: any) => {
+          const text = typeof item === 'string' ? item : item.text;
+          return !usedCards.includes(text);
+      });
+
       if (availableCards.length === 0) {
         dispatch(clearUsedCards());
         availableCards = pool;
       }
 
-      const randomText = availableCards[Math.floor(Math.random() * availableCards.length)];
+      const randomItem = availableCards[Math.floor(Math.random() * availableCards.length)];
+      const randomText = typeof randomItem === 'string' ? randomItem : randomItem.text;
+      const randomIcon = typeof randomItem === 'string' ? undefined : randomItem.icon;
+      const randomIconSize = typeof randomItem === 'string' ? undefined : randomItem.iconSize;
 
       dispatch(
         setActiveChallenge({
           type: pendingManualChallenge,
           text: randomText,
+          icon: randomIcon,
+          iconSize: randomIconSize,
           playerColour: currentPlayerColour,
           isManual: true,
         })
@@ -239,15 +247,16 @@ function Game({ initData }: Props) {
       if (pendingManualChallenge === 'dare') {
         dispatch(incrementPlayerChallenges(currentPlayerColour));
 
-        const typedChallengeData = CHALLENGE_DATA as Record<TVibe, Record<TChallengeType, { level1: string[]; level2: string[]; level3: string[] }>>;
         const darePool = typedChallengeData[vibe as TVibe]['dare'][levelKey];
-        const usedDareCount = darePool.filter((text: string) => usedCards.includes(text)).length + 1;
+        const usedDareCount = darePool.filter((item: any) => {
+            const text = typeof item === 'string' ? item : item.text;
+            return usedCards.includes(text);
+        }).length + 1;
 
         if (usedDareCount >= darePool.length - 3 && currentLevel < 3) {
             dispatch(setLevel(currentLevel + 1));
         }
       }
-
 
       setPendingManualChallenge(null);
     });
@@ -288,6 +297,7 @@ function Game({ initData }: Props) {
           onClick={toggleFullscreen}
           title="Toggle Fullscreen"
         >
+          {/* TODO: Replace ⛶ with icon/asset */}
           {isFullscreen ? '⛶' : '⛶'}
         </button>
 
@@ -299,6 +309,7 @@ function Game({ initData }: Props) {
             onClick={triggerInstantWinTest}
             title="Dev: Instant Win"
           >
+            {/* TODO: Replace 🧪 with icon/asset */}
             🧪
           </button>
         )}
@@ -309,6 +320,7 @@ function Game({ initData }: Props) {
           onClick={handleExitBtnClick}
           title="Exit Game"
         >
+          {/* TODO: Replace ✖ with icon/asset */}
           ✖
         </button>
       </div>
@@ -328,6 +340,7 @@ function Game({ initData }: Props) {
             <div className={styles.playerInfo}>
               <strong>{players[1]?.name ?? 'Player 2'}</strong>
               <span className={styles.turnAvatar} aria-hidden="true">
+                {/* TODO: Replace 💎 with icon/asset */}
                 {draftPlayers[1]?.token || '💎'}
               </span>
             </div>
@@ -387,6 +400,7 @@ function Game({ initData }: Props) {
             <div className={styles.playerInfo}>
               <strong>{players[0]?.name ?? 'Player 1'}</strong>
               <span className={styles.turnAvatar} aria-hidden="true">
+                {/* TODO: Replace 🔥 with icon/asset */}
                 {draftPlayers[0]?.token || '🔥'}
               </span>
             </div>

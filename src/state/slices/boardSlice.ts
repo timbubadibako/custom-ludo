@@ -8,12 +8,20 @@ export type TPendingCapture = {
   tokenColour: TPlayerColour;
 } | null;
 
+export type TChallengeContent = {
+    text: string;
+    icon?: string;
+    iconSize?: number;
+};
+
 export type TActiveChallenge = {
   type: TChallengeType;
   text: string;
   playerColour: TPlayerColour;
   isManual?: boolean;
   title?: string;
+  icon?: string;
+  iconSize?: number;
 } | null;
 
 type TBoardState = {

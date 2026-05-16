@@ -20,6 +20,7 @@ function NotFound() {
         className={styles.notFoundDialog}
       >
         <h1>404</h1>
+        {/* TODO: Replace 🎲 with icon/asset */}
         <p className={styles.oops}>🎲 Wrong Roll!</p>
         <p className={styles.message}>This path leads nowhere. Let's get back to the session.</p>
         <Link className={styles.goToHomeBtn} to="/">

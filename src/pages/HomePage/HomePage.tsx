@@ -15,21 +15,25 @@ import clsx from 'clsx';
 const vibeModes = [
   {
     name: 'Romantic' as TVibe,
+    // TODO: Replace 💗 with icon/asset
     icon: '💗',
     tone: 'Soft touches, slower pacing, and warmer prompts.',
   },
   {
     name: 'Fun' as TVibe,
+    // TODO: Replace 🎲 with icon/asset
     icon: '🎲',
     tone: 'Playful energy, light challenges, and quick surprises.',
   },
   {
     name: 'Naughty' as TVibe,
+    // TODO: Replace 🔥 with icon/asset
     icon: '🔥',
     tone: 'Neon vibes, intense challenges, and wild consequences.',
   },
 ] as const;
 
+// TODO: Replace emojis in tokenIcons with icons/assets
 const tokenIcons = ['🔥', '💗', '🎭', '✨', '💎', '❤️‍🔥'];
 const rewardPresets = ['Winner picks the next song', 'Custom reward', 'Victory drink / snack'];
 

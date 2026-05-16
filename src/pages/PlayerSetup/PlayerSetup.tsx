@@ -23,9 +23,9 @@ import {
 const PLAYER_NAME_EMPTY_TOAST_ID = 'player-name-empty';
 
 const vibeModes = [
-  { name: 'Romantic' as TVibe, icon: '💗' },
-  { name: 'Fun' as TVibe, icon: '🎲' },
-  { name: 'Naughty' as TVibe, icon: '🔥' },
+  { name: 'Romantic' as TVibe, icon: '💗' }, // TODO: Replace heart emoji with themed SVG
+  { name: 'Fun' as TVibe, icon: '🎲' },      // TODO: Replace dice emoji with themed SVG
+  { name: 'Naughty' as TVibe, icon: '🔥' },   // TODO: Replace fire emoji with themed SVG
 ];
 
 function PlayerSetup() {
@@ -155,6 +155,7 @@ function PlayerSetup() {
                 key={index}
                 colour={c}
                 name={playersData[index].name}
+                /* TODO: Replace emoji placeholders with themed SVG icons */
                 token={draftPlayers[index]?.token || (index === 0 ? '🔥' : '💖')}
                 onNameChange={(name) => {
                   const newData = playersData.map((d, i) => (i === index ? { ...d, name } : d));

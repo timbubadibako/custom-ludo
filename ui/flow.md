@@ -29,9 +29,9 @@
 - **Beberapa petak kunci** (dekat base lawan/center) juga bisa jadi special tile.
 - **Total minimal 8–10 petak khusus** tersebar di papan agar game tidak membosankan & tantangan sering muncul.
 - **Visual:** Icon/warna terang:
-    - Truth (🔮 warna ungu/soft biru)
-    - Dare (🎭 warna emas/kuning)
-    - Foreplay (❤️‍🔥 warna magenta/glow)
+    - Truth (🔮 warna ungu/soft biru) <!-- TODO: Replace emoji with SVG reference -->
+    - Dare (🎭 warna emas/kuning) <!-- TODO: Replace emoji with SVG reference -->
+    - Foreplay (❤️‍🔥 warna magenta/glow) <!-- TODO: Replace emoji with SVG reference -->
 
 ---
 

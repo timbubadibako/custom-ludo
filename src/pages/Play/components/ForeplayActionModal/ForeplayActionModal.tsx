@@ -35,11 +35,14 @@ function ForeplayActionModal({ onComplete }: Props) {
   const player = players.find((p: TPlayer) => p.colour === activeChallenge?.playerColour);
 
   const getTitle = () => {
+    // TODO: Replace scale emoji with themed SVG icon
     if (showPenalty) return '⚖️ PENALTY TIME';
     if (!activeChallenge) return '';
     if (activeChallenge.title) return activeChallenge.title;
     switch (activeChallenge.type) {
+      // TODO: Replace crystal ball emoji with themed SVG icon
       case 'truth': return '🔮 Truth Revealed';
+      // TODO: Replace mask emoji with themed SVG icon
       case 'dare': return '🎭 Spicy Dare';
       default: return 'Challenge';
     }
@@ -125,7 +128,18 @@ function ForeplayActionModal({ onComplete }: Props) {
             
             <div className={styles.cardBody}>
                 {!showPenalty ? (
-                    <p className={styles.challengeText}>{activeChallenge.text}</p>
+                    <>
+                        {activeChallenge.icon && (
+                            <div className={styles.iconContainer}>
+                                <img 
+                                    src={activeChallenge.icon} 
+                                    alt="Challenge visual" 
+                                    style={{ width: activeChallenge.iconSize || 120, height: 'auto' }}
+                                />
+                            </div>
+                        )}
+                        <p className={styles.challengeText}>{activeChallenge.text}</p>
+                    </>
                 ) : (
                     <div className={styles.penaltyContent}>
                         <p className={styles.penaltyMsg}>Dare Rejected!</p>
@@ -138,15 +152,15 @@ function ForeplayActionModal({ onComplete }: Props) {
                 {!showPenalty ? (
                     <>
                         <button className={styles.doneBtn} onClick={handleComplete}>
-                            I Did It!
+                            Task Completed
                         </button>
                         <button className={styles.skipBtn} onClick={handleSkip}>
-                            I'm Scared (Skip)
+                            Skip & Take Penalty
                         </button>
                     </>
                 ) : (
                     <button className={styles.doneBtn} onClick={handleAcceptPenalty}>
-                        Order Received (End Turn)
+                        Penalty Accepted
                     </button>
                 )}
             </div>

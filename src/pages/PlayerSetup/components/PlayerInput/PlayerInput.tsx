@@ -12,6 +12,7 @@ type Props = {
   unavailableTokens: string[];
 };
 
+{/* TODO: Replace all emojis in this array with high-quality SVG icon references */}
 const tokenOptions = ['🔥', '💗', '🎭', '✨', '💎', '❤️‍🔥', '💋', '🔮'];
 
 function PlayerInput({ colour, name, token, onNameChange, onTokenChange, unavailableTokens }: Props) {
@@ -31,6 +32,7 @@ function PlayerInput({ colour, name, token, onNameChange, onTokenChange, unavail
         />
         
         <div className={styles.currentTokenDisplay}>
+          {/* TODO: Ensure this supports SVG icons once emojis are replaced */}
           {token}
         </div>
       </div>

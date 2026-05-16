@@ -2,7 +2,7 @@
   <img src="https://libreludo.org/icons/favicon.png" alt="LibreLudo Logo" width="120" />
 </p>
 
-<h1 align="center">🎲 LibreLudo</h1>
+<h1 align="center">🎲 LibreLudo</h1> <!-- TODO: Replace emoji with logo/icon -->
 
 <p align="center">
   A modern, ad-free, open-source Ludo game with a clean UI, local multiplayer, and bot opponents.
@@ -78,3 +78,4 @@ Contributions are welcome! Please read the [CONTRIBUTING.md](CONTRIBUTING.md) be
 ## 📜 License
 
 This software is licensed under the GNU Affero General Public License, version 3. See the <a href="https://github.com/priyanshurav/libreludo/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">LICENSE</a> for more info.
+ 3. See the <a href="https://github.com/priyanshurav/libreludo/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">LICENSE</a> for more info.

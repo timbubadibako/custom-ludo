@@ -62,6 +62,7 @@ function GameFinishedScreen({ playerFinishOrder }: Props) {
           >
             <p className={styles.rewardLabel}>Winner's Spicy Reward:</p>
             <div className={styles.rewardCard}>
+              {/* TODO: Replace trophy emoji with custom 3D Trophy or high-quality PNG */}
               <span className={styles.rewardIcon}>🏆</span>
               <p className={styles.rewardText}>{reward || "A night of passion and bliss"}</p>
             </div>
@@ -93,7 +94,8 @@ function GameFinishedScreen({ playerFinishOrder }: Props) {
           </div>
           
           <p className={styles.gameFinishedNote}>
-            The game may end here, but your evening is just getting started. Enjoy your reward! 🔥
+            {/* TODO: Replace fire emoji with themed SVG animation */}
+            The game may end here, but your evening is just getting started. Enjoy your reward! 
           </p>
         </motion.div>
       </motion.div>

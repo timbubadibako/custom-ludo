@@ -17,6 +17,7 @@ function Navbar() {
     >
       <div className={styles.navContent}>
         <Link to="/" className={styles.logo}>
+          {/* TODO: Replace 🎲 with icon/asset */}
           <span className={styles.diceIcon}>🎲</span>
           <span className={styles.logoText}>LibreLudo</span>
         </Link>

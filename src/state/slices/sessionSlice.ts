@@ -22,7 +22,9 @@ export const initialState: TSessionState = {
   vibe: 'Fun',
   reward: 'Winner picks the next song',
   draftPlayers: [
+    // TODO: Replace fire emoji with themed SVG icon reference
     { name: 'Player 1', token: '🔥', colour: 'blue' },
+    // TODO: Replace diamond emoji with themed SVG icon reference
     { name: 'Player 2', token: '💎', colour: 'red' },
   ],
 };

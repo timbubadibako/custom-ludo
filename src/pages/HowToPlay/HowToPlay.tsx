@@ -9,31 +9,37 @@ const H = ({ c }: { c: string }) => <span className={styles.icon} aria-hidden="t
 const rules = [
     {
         title: "Objective",
+        // TODO: Replace 🎯 with icon/asset
         icon: "🎯",
         content: "Move all 4 of your tokens into the Home Base. The winner gets the agreed 'Spicy Reward'."
     },
     {
         title: "Challenges",
+        // TODO: Replace 🔥 with icon/asset
         icon: "🔥",
         content: "Landing on Truth or Dare tiles triggers a challenge. Completing a DARE advances your Heat Bar and Level."
     },
     {
         title: "Heat Meter",
+        // TODO: Replace 🌡️ with icon/asset
         icon: "🌡️",
         content: "Only DARE challenges increase your meter. Higher levels unlock more intense (Naughty) content."
     },
     {
         title: "Skip & Penalty",
+        // TODO: Replace ⚖️ with icon/asset
         icon: "⚖️",
         content: "Too scared for a Dare? You can skip, but your partner will give you a custom replacement penalty!"
     },
     {
         title: "Strategic Moves",
+        // TODO: Replace 🎲 with icon/asset
         icon: "🎲",
         content: "Taking a challenge grants fixed dice: 6 for Dare, 3 for Truth. Use them wisely to reach home faster."
     },
     {
         title: "Safe Zones",
+        // TODO: Replace ⭐ with icon/asset
         icon: "⭐",
         content: "Star tiles are safe zones. You cannot be captured while resting on a Star."
     }
@@ -71,6 +77,7 @@ function HowToPlay() {
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
         >
+          {/* TODO: Replace 🎲 with icon/asset */}
           <H c="🎲" /> Rulebook
         </motion.h1>
         <motion.p 

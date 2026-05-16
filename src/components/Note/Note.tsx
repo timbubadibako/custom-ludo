@@ -12,12 +12,14 @@ function getLabel(type: TLabelType): React.ReactElement {
     case 'important':
       return (
         <>
+          {/* TODO: Replace ⚠️ with icon/asset */}
           <span aria-hidden="true">⚠️</span>&nbsp;Important:
         </>
       );
     case 'bonus':
       return (
         <>
+          {/* TODO: Replace ⭐ with icon/asset */}
           <span aria-hidden="true">⭐</span>&nbsp;Bonus:
         </>
       );
