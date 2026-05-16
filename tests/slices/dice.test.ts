@@ -39,6 +39,18 @@ describe('Test dice slice reducers', () => {
       const state = diceReducer(initialState, registerDice('blue'));
       const newState = diceReducer(state, setDiceNumber({ colour: 'blue', randomIndex: 0 }));
       expect(getDice(newState, 'blue').diceNumber).toBe(state.rollBag.blue[0]);
+      expect(getDice(newState, 'blue').lastRollIsReward).toBe(false);
+    });
+  });
+  describe('forceDiceNumber', () => {
+    it('should force the dice number and set lastRollIsReward correctly', () => {
+      const state = diceReducer(initialState, registerDice('blue'));
+      const newState = diceReducer(state, { 
+        type: 'dice/forceDiceNumber', 
+        payload: { colour: 'blue', number: 4, isReward: true } 
+      });
+      expect(getDice(newState, 'blue').diceNumber).toBe(4);
+      expect(getDice(newState, 'blue').lastRollIsReward).toBe(true);
     });
   });
   describe('renewRollBag', () => {
