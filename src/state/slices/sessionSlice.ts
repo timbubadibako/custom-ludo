@@ -24,10 +24,9 @@ export const initialState: TSessionState = {
   vibe: 'Fun',
   reward: 'Winner picks the next song',
   draftPlayers: [
-    /* TODO: Replace 'Male' text with a Male SVG icon component */
-    { name: 'Player 1', token: 'Male', colour: 'blue' },
-    /* TODO: Replace 'Female' text with a Female SVG icon component */
-    { name: 'Player 2', token: 'Female', colour: 'red' },
+    /* TODO: Replace emojis with SVG icon components later */
+    { name: 'Player 1', token: '♂️', colour: 'blue' },
+    { name: 'Player 2', token: '♀️', colour: 'red' },
   ],
   isMuted: false,
   vibrationEnabled: true,

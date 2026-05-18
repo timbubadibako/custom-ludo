@@ -11,8 +11,8 @@ type Props = {
   onTokenChange: (token: string) => void;
 };
 
-{/* TODO: Replace these text labels with gender icon components (e.g. <MaleIcon />, <FemaleIcon />) */}
-const tokenOptions = ['Male', 'Female'];
+{/* TODO: Replace these emojis with gender icon components (e.g. <MaleIcon />, <FemaleIcon />) */}
+const tokenOptions = ['♂️', '♀️'];
 
 function PlayerInput({ colour, name, token, onNameChange, onTokenChange }: Props) {
   return (

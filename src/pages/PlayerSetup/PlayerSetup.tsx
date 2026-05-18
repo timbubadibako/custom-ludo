@@ -153,8 +153,8 @@ function PlayerSetup() {
                 key={index}
                 colour={c}
                 name={playersData[index].name}
-                /* TODO: Use Male/Female SVG icons instead of text placeholders */
-                token={draftPlayers[index]?.token || (index === 0 ? 'Male' : 'Female')}
+                /* TODO: Use Male/Female SVG icons instead of emojis */
+                token={draftPlayers[index]?.token || (index === 0 ? '♂️' : '♀️')}
                 onNameChange={(name) => {
                   const newData = playersData.map((d, i) => (i === index ? { ...d, name } : d));
                   setPlayersData(newData);
@@ -164,7 +164,7 @@ function PlayerSetup() {
                   dispatch(updateDraftPlayer({ index, data: { token } }));
                   // Auto-opposite logic for 2 players
                   const otherIndex = index === 0 ? 1 : 0;
-                  const otherToken = token === 'Male' ? 'Female' : 'Male';
+                  const otherToken = token === '♂️' ? '♀️' : '♂️';
                   dispatch(updateDraftPlayer({ index: otherIndex, data: { token: otherToken } }));
                 }}
               />
