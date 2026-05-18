@@ -63,8 +63,8 @@
 .yellow::after { transform: translate(-50%, -50%) rotate(45deg); width: 35%; height: 35%; }
 
 @keyframes pulseGlow {
-  0%, 100% { filter: drop-shadow(0 0 8px var(--fill-colour)); }
-  50% { filter: drop-shadow(0 0 20px var(--fill-colour)) brightness(1.2); }
+  0%, 100% { filter: drop-shadow(0 0 4px var(--fill-colour)); }
+  50% { filter: drop-shadow(0 0 10px var(--fill-colour)) brightness(1.1); }
 }
 
 .token:focus-visible .svg {
@@ -80,6 +80,6 @@
     transform: translate3d(0, 0, 0);
   }
   50% {
-    transform: translate3d(0, -8px, 0);
+    transform: translate3d(0, -4px, 0);
   }
 }

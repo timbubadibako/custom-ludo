@@ -1,3 +1,5 @@
+import { store } from '../state/store';
+
 export const SFX = {
     DICE_ROLL: '/src/assets/sounds/dice_roll.mp3',
     PAWN_STEP: '/src/assets/sounds/pawn_step.mp3',
@@ -22,6 +24,9 @@ const SFX_VOLUME_MAP: Record<string, number> = {
 };
 
 export function playSFX(src: string) {
+    const isMuted = store.getState().session.isMuted;
+    if (isMuted) return;
+
     const audio = new Audio(src);
     
     // Apply tuned volume from the map
@@ -31,4 +36,19 @@ export function playSFX(src: string) {
         // Silently fail if audio file is missing or blocked by browser policy
         console.warn(`SFX file not found or play blocked: ${src}`);
     });
+}
+
+/**
+ * Trigger device vibration if enabled.
+ * Pattern example: [100, 50, 100] (vibrate 100ms, wait 50ms, vibrate 100ms)
+ */
+export function triggerVibrate(pattern: number | number[] = 50) {
+    const isVibrationEnabled = store.getState().session.vibrationEnabled;
+    if (!isVibrationEnabled || !('vibrate' in navigator)) return;
+    
+    try {
+        navigator.vibrate(pattern);
+    } catch (e) {
+        console.warn('Vibration failed:', e);
+    }
 }

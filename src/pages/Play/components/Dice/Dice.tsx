@@ -81,6 +81,7 @@ function Dice({ colour, onDiceClick, playerName }: Props) {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleDiceClick, isDiceDisabled]);
+
   return (
     <div className={clsx(styles.diceContainer, styles[colour])}>
       <button

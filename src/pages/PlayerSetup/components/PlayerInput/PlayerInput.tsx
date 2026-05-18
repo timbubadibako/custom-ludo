@@ -9,13 +9,12 @@ type Props = {
   token: string;
   onNameChange: (name: string) => void;
   onTokenChange: (token: string) => void;
-  unavailableTokens: string[];
 };
 
-{/* TODO: Replace all emojis in this array with high-quality SVG icon references */}
-const tokenOptions = ['🔥', '💗', '🎭', '✨', '💎', '❤️‍🔥', '💋', '🔮'];
+{/* TODO: Replace these text labels with gender icon components (e.g. <MaleIcon />, <FemaleIcon />) */}
+const tokenOptions = ['Male', 'Female'];
 
-function PlayerInput({ colour, name, token, onNameChange, onTokenChange, unavailableTokens }: Props) {
+function PlayerInput({ colour, name, token, onNameChange, onTokenChange }: Props) {
   return (
     <div className={styles.playerInputCard}>
       <div className={styles.playerInputMain}>
@@ -40,19 +39,15 @@ function PlayerInput({ colour, name, token, onNameChange, onTokenChange, unavail
       <div className={styles.tokenPickerPanel}>
         <div className={styles.tokenOptionsRow}>
           {tokenOptions.map((opt) => {
-            const isSelectedByOther = unavailableTokens.includes(opt);
             return (
               <button
                 key={opt}
                 type="button"
                 className={clsx(
                   styles.tokenOptionBtn, 
-                  token === opt && styles.tokenOptionActive,
-                  isSelectedByOther && styles.tokenOptionDisabled
+                  token === opt && styles.tokenOptionActive
                 )}
-                onClick={() => !isSelectedByOther && onTokenChange(opt)}
-                disabled={isSelectedByOther}
-                title={isSelectedByOther ? 'Token already chosen' : ''}
+                onClick={() => onTokenChange(opt)}
               >
                 {opt}
               </button>

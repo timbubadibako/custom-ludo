@@ -10,10 +10,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "type-check": "tsc --noEmit --project ./tsconfig.app.json",
-    "host": "vite --host",
-    "test": "vitest run --reporter verbose",
-    "test:watch": "vitest --reporter verbose",
-    "test:coverage": "vitest run --coverage"
+    "host": "vite --host"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.2.8",
@@ -40,12 +37,10 @@
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.2",
-    "@vitest/coverage-istanbul": "^4.0.16",
     "eslint": "^9.39.2",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.26",
     "globals": "^16.5.0",
-    "jsdom": "^27.3.0",
     "netlify-cli": "^26.0.1",
     "rollup-plugin-license": "^3.7.0",
     "sharp": "^0.34.5",
@@ -57,7 +52,6 @@
     "vite-plugin-image-optimizer": "^2.0.3",
     "vite-plugin-pwa": "^1.2.0",
     "vite-plugin-static-copy": "^3.2.0",
-    "vite-plugin-svgr": "^4.5.0",
-    "vitest": "^4.0.16"
+    "vite-plugin-svgr": "^4.5.0"
   }
 }

@@ -1,5 +1,5 @@
 import { FORWARD_TOKEN_TRANSITION_TIME } from '../../game/tokens/constants';
-import { selectBestTokenForBot } from '../../game/bot/selectBestTokenForBot';
+import { isTokenMovable, getAvailableSteps } from '../../game/tokens/logic';
 import type { AppDispatch, RootState } from '../store';
 import type { useMoveAndCaptureToken } from '../../hooks/useMoveAndCaptureToken';
 import { setTokenTransitionTime } from '../../utils/setTokenTransitionTime';
@@ -7,7 +7,7 @@ import { changeTurn, deactivateAllTokens } from '../slices/playersSlice';
 import { handlePostDiceRollThunk } from './handlePostDiceRollThunk';
 import { rollDiceThunk } from './rollDiceThunk';
 import { unlockAndAlignTokens } from './unlockAndAlignTokens';
-import { type TPlayer } from '../../types';
+import { type TToken } from '../../types';
 
 export function changeTurnThunk(moveAndCapture: ReturnType<typeof useMoveAndCaptureToken>) {
   return (dispatch: AppDispatch, getState: () => RootState) => {
@@ -27,7 +27,7 @@ export function changeTurnThunk(moveAndCapture: ReturnType<typeof useMoveAndCapt
 
       const { players } = getState().players;
 
-      const allTokens = players.flatMap((p: TPlayer) => p.tokens);
+      const playerTokens = players.find((p) => p.colour === colour)?.tokens || [];
       if (!shouldContinue) return;
       if (autoMoveData) {
         const { hasTokenReachedHome, isCaptured } = autoMoveData;
@@ -39,7 +39,16 @@ export function changeTurnThunk(moveAndCapture: ReturnType<typeof useMoveAndCapt
         }
       }
 
-      const bestToken = selectBestTokenForBot(colour, diceNumber, allTokens);
+      // Simple bot logic replacement for the deleted bot directory
+      let bestToken: TToken | undefined;
+      if (diceNumber === 6) {
+        bestToken = playerTokens.find((t) => t.isLocked && !t.hasTokenReachedHome);
+      }
+      if (!bestToken) {
+        const movableTokens = playerTokens.filter((t) => isTokenMovable(t, diceNumber));
+        bestToken = movableTokens.sort((a, b) => getAvailableSteps(a) - getAvailableSteps(b))[0];
+      }
+
       if (!bestToken) return;
 
       setTokenTransitionTime(FORWARD_TOKEN_TRANSITION_TIME, bestToken);

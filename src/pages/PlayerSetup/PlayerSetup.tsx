@@ -91,8 +91,6 @@ function PlayerSetup() {
     });
   };
 
-  const selectedTokens = draftPlayers.map(p => p.token);
-
   return isLoading ? (
     <LoadingScreen />
   ) : (
@@ -155,8 +153,8 @@ function PlayerSetup() {
                 key={index}
                 colour={c}
                 name={playersData[index].name}
-                /* TODO: Replace emoji placeholders with themed SVG icons */
-                token={draftPlayers[index]?.token || (index === 0 ? '🔥' : '💖')}
+                /* TODO: Use Male/Female SVG icons instead of text placeholders */
+                token={draftPlayers[index]?.token || (index === 0 ? 'Male' : 'Female')}
                 onNameChange={(name) => {
                   const newData = playersData.map((d, i) => (i === index ? { ...d, name } : d));
                   setPlayersData(newData);
@@ -164,8 +162,11 @@ function PlayerSetup() {
                 }}
                 onTokenChange={(token) => {
                   dispatch(updateDraftPlayer({ index, data: { token } }));
+                  // Auto-opposite logic for 2 players
+                  const otherIndex = index === 0 ? 1 : 0;
+                  const otherToken = token === 'Male' ? 'Female' : 'Male';
+                  dispatch(updateDraftPlayer({ index: otherIndex, data: { token: otherToken } }));
                 }}
-                unavailableTokens={selectedTokens.filter((_token: string, i: number) => i !== index)}
               />
             ))}
           </div>

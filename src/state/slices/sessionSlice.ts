@@ -14,6 +14,8 @@ type TSessionState = {
   vibe: TVibe;
   reward: string;
   draftPlayers: TDraftPlayer[];
+  isMuted: boolean;
+  vibrationEnabled: boolean;
 };
 
 export const initialState: TSessionState = {
@@ -22,11 +24,13 @@ export const initialState: TSessionState = {
   vibe: 'Fun',
   reward: 'Winner picks the next song',
   draftPlayers: [
-    // TODO: Replace fire emoji with themed SVG icon reference
-    { name: 'Player 1', token: '🔥', colour: 'blue' },
-    // TODO: Replace diamond emoji with themed SVG icon reference
-    { name: 'Player 2', token: '💎', colour: 'red' },
+    /* TODO: Replace 'Male' text with a Male SVG icon component */
+    { name: 'Player 1', token: 'Male', colour: 'blue' },
+    /* TODO: Replace 'Female' text with a Female SVG icon component */
+    { name: 'Player 2', token: 'Female', colour: 'red' },
   ],
+  isMuted: false,
+  vibrationEnabled: true,
 };
 
 const reducers = {
@@ -41,6 +45,12 @@ const reducers = {
   },
   setReward: (state: TSessionState, action: PayloadAction<string>) => {
     state.reward = action.payload;
+  },
+  toggleMute: (state: TSessionState) => {
+    state.isMuted = !state.isMuted;
+  },
+  toggleVibration: (state: TSessionState) => {
+    state.vibrationEnabled = !state.vibrationEnabled;
   },
   updateDraftPlayer: (state: TSessionState, action: PayloadAction<{ index: number; data: Partial<TDraftPlayer> }>) => {
     const player = state.draftPlayers[action.payload.index];
